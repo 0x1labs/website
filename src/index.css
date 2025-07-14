@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  cursor: none;
+  overflow-x: hidden;
+}
+
+@layer base {
+  :root { /* Light theme defaults */
+    --color-background: #FFFFFF;
+    --color-text: #1A1A1A;
+    --color-brand: #0056B3; /* Darker blue for light theme */
+    --color-brand-rgb: 0, 86, 179;
+    --color-subtle-bg: #F0F0F0;
+    --color-subtle-text: #666666;
+  }
+
+  html.dark {
+    --color-background: #0A0A1A;
+    --color-text: #E0E0E0;
+    --color-brand: #007BFF; /* Original blue for dark theme */
+    --color-brand-rgb: 0, 123, 255;
+    --color-subtle-bg: #1A1A2A;
+    --color-subtle-text: #A0A0A0;
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: linear-gradient(theme(colors.subtle-bg) 1px, transparent 1px), linear-gradient(90deg, theme(colors.subtle-bg) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
