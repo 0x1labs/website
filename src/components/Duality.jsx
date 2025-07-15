@@ -1,10 +1,6 @@
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const products = [
   { title: 'AI Workflow Assistant', description: 'Automating complex business logic.' },
@@ -19,47 +15,28 @@ const services = [
 ];
 
 const Duality = () => {
-  const componentRef = useRef(null);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
 
-  useEffect(() => {
-    const productCards = gsap.utils.toArray('.product-card');
-    const serviceCards = gsap.utils.toArray('.service-card');
+  const itemVariants = {
+    hidden: { opacity: 0, x: -100 },
+    show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
 
-    gsap.fromTo(productCards, 
-      { x: -100, opacity: 0 },
-      {
-        x: 0, 
-        opacity: 1, 
-        stagger: 0.3, // Increased stagger for slower animation
-        scrollTrigger: {
-          trigger: componentRef.current,
-          start: 'top 70%',
-          end: 'top 20%',
-          scrub: true,
-          toggleActions: "play reverse play reverse" // Re-trigger on scroll up
-        }
-      }
-    );
-
-    gsap.fromTo(serviceCards, 
-      { x: 100, opacity: 0 },
-      {
-        x: 0, 
-        opacity: 1, 
-        stagger: 0.5, // Increased stagger for slower animation
-        scrollTrigger: {
-          trigger: componentRef.current,
-          start: 'top 70%',
-          end: 'top 20%',
-          scrub: true,
-          toggleActions: "play reverse play reverse" // Re-trigger on scroll up
-        }
-      }
-    );
-  }, []);
+  const itemVariantsRight = {
+    hidden: { opacity: 0, x: 100 },
+    show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
 
   return (
-    <section ref={componentRef} id="duality" className="py-24 px-8 bg-background">
+    <section id="duality" className="py-24 px-8 bg-background">
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display font-bold text-text">Our Duality</h2>
@@ -68,25 +45,45 @@ const Duality = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div>
             <h3 className="text-2xl md:text-3xl font-display font-semibold text-brand mb-6">Internal Products</h3>
-            <div className="space-y-4">
+            <motion.div 
+              className="space-y-4"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: false, amount: 0.3 }}
+            >
               {products.map((item, index) => (
-                <div key={index} className="product-card p-6 bg-background rounded-lg border border-subtle-text/20">
+                <motion.div 
+                  key={index} 
+                  className="p-6 bg-background rounded-lg border border-subtle-text/20"
+                  variants={itemVariants}
+                >
                   <h4 className="font-bold text-base md:text-lg text-text">{item.title}</h4>
                   <p className="text-sm md:text-base text-subtle-text">{item.description}</p>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
           <div>
             <h3 className="text-2xl md:text-3xl font-display font-semibold text-brand mb-6">Client Services</h3>
-            <div className="space-y-4">
+            <motion.div 
+              className="space-y-4"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: false, amount: 0.3 }}
+            >
               {services.map((item, index) => (
-                <div key={index} className="service-card p-6 bg-background rounded-lg border border-subtle-text/20">
+                <motion.div 
+                  key={index} 
+                  className="p-6 bg-background rounded-lg border border-subtle-text/20"
+                  variants={itemVariantsRight}
+                >
                   <h4 className="font-bold text-base md:text-lg text-text">{item.title}</h4>
                   <p className="text-sm md:text-base text-subtle-text">{item.description}</p>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

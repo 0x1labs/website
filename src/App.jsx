@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -9,10 +9,12 @@ import Cursor from './components/Cursor';
 
 
 export default function App() {
+  const cursorRef = useRef(null);
+
   return (
     <div className="bg-background text-text font-sans">
-      <Cursor />
-      <Navbar />
+      <Cursor ref={cursorRef} />
+      <Navbar cursorRef={cursorRef} />
       <main>
         
         <Hero />

@@ -1,15 +1,13 @@
-
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, useMotionValue } from 'framer-motion';
 
 const Cursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
   const [isHovering, setIsHovering] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const [isMovingFast, setIsMovingFast] = useState(false);
-  const lastPosition = useRef({ x: 0, y: 0 });
-  const lastTime = useRef(Date.now());
   const [isMobile, setIsMobile] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -20,23 +18,8 @@ const Cursor = () => {
     window.addEventListener('resize', checkMobile);
 
     const updatePosition = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-
-      const currentTime = Date.now();
-      const dx = e.clientX - lastPosition.current.x;
-      const dy = e.clientY - lastPosition.current.y;
-      const dt = currentTime - lastTime.current;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const speed = distance / dt; // pixels per millisecond
-
-      if (speed > 0.8) { // Threshold for "fast" movement
-        setIsMovingFast(true);
-      } else {
-        setIsMovingFast(false);
-      }
-
-      lastPosition.current = { x: e.clientX, y: e.clientY };
-      lastTime.current = currentTime;
+      x.set(e.clientX);
+      y.set(e.clientY);
     };
 
     const handleMouseDown = () => setIsClicked(true);
@@ -56,6 +39,33 @@ const Cursor = () => {
       el.addEventListener('mouseleave', handleMouseLeave);
     });
 
+    // Initial animation from Navbar's 0x1 'x'
+    const navbar0x1Link = document.getElementById('navbar-0x1-link');
+    if (navbar0x1Link) {
+      const rect = navbar0x1Link.getBoundingClientRect();
+      // Approximate center of the 'x' in '0x1'
+      const startX = rect.left + rect.width / 2;
+      const startY = rect.top + rect.height / 2;
+
+      x.set(startX);
+      y.set(startY);
+
+      // Animate to current mouse position after a short delay
+      const animateToMouse = (e) => {
+        x.set(e.clientX);
+        y.set(e.clientY);
+        setIsInitialLoad(false);
+        window.removeEventListener('mousemove', animateToMouse);
+      };
+      // Use a timeout to ensure the mousemove listener is added after initial render
+      setTimeout(() => {
+        window.addEventListener('mousemove', animateToMouse);
+      }, 100);
+
+    } else {
+      setIsInitialLoad(false); // No navbar element, so no initial animation
+    }
+
     return () => {
       window.removeEventListener('resize', checkMobile);
       window.removeEventListener('mousemove', updatePosition);
@@ -65,54 +75,37 @@ const Cursor = () => {
         el.removeEventListener('mouseenter', handleMouseEnter);
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
+      // Clean up initial animation listener if it was added
+      window.removeEventListener('mousemove', (e) => {
+        x.set(e.clientX);
+        y.set(e.clientY);
+        setIsInitialLoad(false);
+      });
     };
   }, []);
 
   const cursorVariants = {
     default: {
-      x: position.x - 5,
-      y: position.y - 5,
-      height: 10,
-      width: 10,
-      backgroundColor: 'var(--color-brand)',
-      opacity: 0.8,
+      width: 24, 
+      height: 24, 
+      opacity: 1,
       scale: 1,
-      boxShadow: '0 0 8px 4px rgba(var(--color-brand-rgb), 0.5)',
-      transition: { type: 'spring', stiffness: 500, damping: 30 }
+      transition: { duration: 0.05, ease: "linear" }
     },
     hover: {
-      x: position.x - 10,
-      y: position.y - 10,
-      height: 20,
-      width: 20,
-      backgroundColor: 'var(--color-brand)',
-      opacity: 1,
+      width: 32, 
+      height: 32, 
+      opacity: 0.8,
       scale: 1.2,
-      boxShadow: '0 0 12px 6px rgba(var(--color-brand-rgb), 0.7)',
-      transition: { type: 'spring', stiffness: 400, damping: 20 }
+      transition: { duration: 0.05, ease: "linear" }
     },
     click: {
-      x: position.x - 7.5,
-      y: position.y - 7.5,
-      height: 15,
-      width: 15,
-      backgroundColor: 'var(--color-brand)',
-      opacity: 1,
-      scale: 0.8,
-      boxShadow: '0 0 6px 3px rgba(var(--color-brand-rgb), 0.9)',
-      transition: { type: 'spring', stiffness: 600, damping: 10 }
+      width: 28, 
+      height: 28, 
+      opacity: 0.9,
+      scale: 0.9,
+      transition: { duration: 0.05, ease: "linear" }
     },
-    fastMove: {
-      x: position.x - 7.5,
-      y: position.y - 7.5,
-      height: 15,
-      width: 15,
-      backgroundColor: 'var(--color-brand)',
-      opacity: 0.6,
-      scale: 1.5,
-      boxShadow: '0 0 10px 5px rgba(var(--color-brand-rgb), 0.4)',
-      transition: { type: 'spring', stiffness: 300, damping: 15 }
-    }
   };
 
   let currentVariant = 'default';
@@ -120,18 +113,25 @@ const Cursor = () => {
     currentVariant = 'click';
   } else if (isHovering) {
     currentVariant = 'hover';
-  } else if (isMovingFast) {
-    currentVariant = 'fastMove';
   }
 
   if (isMobile) return null; // Don't render cursor on mobile
 
   return (
     <motion.div
-      className="fixed top-0 left-0 rounded-full pointer-events-none z-[999]"
+      className="fixed top-0 left-0 pointer-events-none z-[999]"
+      style={{ x, y, translateX: '-50%', translateY: '-50%' }}
       variants={cursorVariants}
       animate={currentVariant}
-    />
+    >
+      <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Outer circle (representing 0) */}
+        <circle cx="12" cy="12" r="10" stroke="var(--color-brand)" strokeWidth="1.5" fill={isHovering ? "var(--color-brand)" : "none"} />
+        {/* Inner cross (representing 1 and precision) */}
+        <line x1="8" y1="8" x2="16" y2="16" stroke="var(--color-brand)" strokeWidth="1.5" />
+        <line x1="16" y1="8" x2="8" y2="16" stroke="var(--color-brand)" strokeWidth="1.5" />
+      </svg>
+    </motion.div>
   );
 };
 

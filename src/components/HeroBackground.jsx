@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { gsap } from 'gsap';
 
 const generateNodes = (count, width, height) => {
   const nodes = [];
@@ -17,8 +17,8 @@ const generateNodes = (count, width, height) => {
 
 const HeroBackground = () => {
   const [nodes, setNodes] = useState([]);
-  const [clickedNode, setClickedNode] = useState(null);
   const animationFrameId = useRef(null);
+  const svgRef = useRef(null); // Ref for the main SVG
 
   // Function to update node positions
   const updateNodePositions = useCallback(() => {
@@ -47,7 +47,7 @@ const HeroBackground = () => {
   }, [updateNodePositions]);
 
   const handleClick = (event) => {
-    const svg = event.currentTarget;
+    const svg = svgRef.current;
     const pt = svg.createSVGPoint();
     pt.x = event.clientX;
     pt.y = event.clientY;
@@ -58,39 +58,84 @@ const HeroBackground = () => {
       id: Date.now(),
       x: svgP.x,
       y: svgP.y,
-      vx: (Math.random() - 0.5) * 0.05,
-      vy: (Math.random() - 0.5) * 0.05,
+      vx: (Math.random() - 0.5) * 0.05, // Give new node velocity
+      vy: (Math.random() - 0.5) * 0.05, // Give new node velocity
     };
 
-    setNodes((prevNodes) => [...prevNodes, newNode]); // Add new node to network
-    setClickedNode(newNode); // Trigger flash animation for new node
+    setNodes((prevNodes) => {
+      const updatedNodes = [...prevNodes, newNode];
+
+      // Animate the new node (circle) in
+      const newCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      newCircle.setAttribute("cx", newNode.x);
+      newCircle.setAttribute("cy", newNode.y);
+      newCircle.setAttribute("r", "0.5");
+      newCircle.setAttribute("fill", "var(--color-brand)");
+      newCircle.setAttribute("opacity", "0.3");
+      svg.appendChild(newCircle);
+
+      gsap.fromTo(newCircle,
+        { opacity: 0, scale: 0 },
+        { opacity: 0, scale: 1, duration: 0.2, ease: "back.out(1.7)" }
+      );
+
+      // Make new node disappear after some time
+      gsap.to(newCircle, { opacity: 0, duration: 5, delay: 10, onComplete: () => newCircle.remove() });
+
+      return updatedNodes;
+    });
   };
 
+  useEffect(() => {
+    // GSAP animations for initial lines and circles
+    gsap.utils.toArray(svgRef.current.querySelectorAll('line')).forEach((line) => {
+      gsap.fromTo(line,
+        { opacity: 0 },
+        { opacity: 0.01, duration: 4, repeat: -1, yoyo: true, ease: "easeInOut" }
+      );
+    });
+
+    gsap.utils.toArray(svgRef.current.querySelectorAll('circle')).forEach((circle) => {
+      gsap.fromTo(circle,
+        { opacity: 0 },
+        { opacity: 0.02, duration: 4, repeat: -1, yoyo: true, ease: "easeInOut", delay: Math.random() * 4 }
+      );
+
+      // Hover effects
+      circle.onmouseenter = () => {
+        gsap.to(circle, { r: 1, opacity: 0.1, duration: 0.1 });
+      };
+      circle.onmouseleave = () => {
+        gsap.to(circle, { r: 0.5, opacity: 0.02, duration: 0.1 });
+      };
+    });
+
+  }, []);
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-auto z-0" onClick={handleClick}> {/* pointer-events-auto to capture clicks */}
-      <motion.svg
-        className="w-full h-full"
+    <div className="absolute inset-0 overflow-hidden pointer-events-auto z-0 min-w-0" onClick={handleClick}>
+      <svg
+        ref={svgRef}
+        className="w-full h-full min-w-0"
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Connections between nodes */}
+        {/* Initial Connections between nodes */}
         {nodes.map((node1) =>
           nodes.map((node2) => {
             const dist = Math.sqrt(Math.pow(node1.x - node2.x, 2) + Math.pow(node1.y - node2.y, 2));
             if (dist < 20) { // Increased connection distance
               return (
-                <motion.line
+                <line
                   key={`${node1.id}-${node2.id}`}
                   x1={node1.x}
                   y1={node1.y}
                   x2={node2.x}
                   y2={node2.y}
                   stroke="var(--color-subtle-text)"
-                  strokeWidth="0.08" /* Adjusted strokeWidth */
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.15 }} /* Adjusted opacity */
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }} /* Slower transition */
+                  strokeWidth="0.08"
+                  opacity="0.15" 
                 />
               );
             }
@@ -98,43 +143,18 @@ const HeroBackground = () => {
           })
         )}
 
-        {/* Nodes */}
+        {/* Initial Nodes */}
         {nodes.map((node) => (
-          <motion.circle
+          <circle
             key={node.id}
             cx={node.x}
             cy={node.y}
-            r="0.5" /* Adjusted radius */
+            r="0.5"
             fill="var(--color-brand)"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.2 }} /* Adjusted opacity */
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", repeatType: "reverse", delay: Math.random() * 4 }} /* Slower transition */
-            whileHover={{
-              scale: 2,
-              opacity: 1,
-              transition: { duration: 0.1 }
-            }}
-            data-interactive
+            opacity="0.65" 
           />
         ))}
-
-        {/* Clicked Node Flash */}
-        <AnimatePresence>
-          {clickedNode && (
-            <motion.circle
-              key={clickedNode.id}
-              cx={clickedNode.x}
-              cy={clickedNode.y}
-              r="1" /* Slightly larger for visibility */
-              fill="var(--color-brand)" /* Use brand color */
-              initial={{ scale: 0, opacity: 1 }}
-              animate={{ scale: 3, opacity: 0, transition: { duration: 1, ease: "easeOut" } }}
-              exit={{ opacity: 0, transition: { duration: 0.5 } }}
-              data-interactive
-            />
-          )}
-        </AnimatePresence>
-      </motion.svg>
+      </svg>
     </div>
   );
 };
