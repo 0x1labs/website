@@ -19,8 +19,8 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setMessage(null) // Clear previous messages
-    setDisplayMessage(false) // Hide message immediately on new submission
+    setMessage(null)
+    setDisplayMessage(false)
 
     const url = process.env.NEXT_PUBLIC_APP_SCRIPT_URL
 
@@ -47,13 +47,11 @@ const Contact = () => {
         type: 'success', 
         text: 'Thank you for your message! We truly appreciate you reaching out and will get back to you as soon as possible.' 
       })
-      setFormData({ name: '', email: '', message: '' }) // Clear form
+      setFormData({ name: '', email: '', message: '' })
       setDisplayMessage(true)
       
-      // Hide success message after 5 seconds
       setTimeout(() => {
         setDisplayMessage(false)
-        // Clear message state after animation completes
         setTimeout(() => setMessage(null), 300)
       }, 5000)
     } catch (err) {
@@ -76,47 +74,67 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact" className="py-24 bg-gradient-contact text-white font-heading">
-      <div className="max-w-5xl mx-auto px-8">
+    <section id="contact" className="section-padding container-padding bg-neutral-900 text-white">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           ref={ref}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 1 }}
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.8 }}
         >
+          <h2 className="font-heading font-black text-white mb-6">
+            Have a Bold Idea?
+          </h2>
+          <p className="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto leading-relaxed">
+            Let's transform your vision into something real. We're fast, collaborative, and obsessed with quality.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 1, delay: 0.2 }}
+            className="space-y-12"
           >
-            <h2 className="text-5xl font-extrabold mb-4 text-white">
-              Have a Bold Idea?
-            </h2>
-            <p className="text-xl text-slate-300 leading-relaxed mb-8">
-              Let's transform your vision into something real. We're fast, collaborative, and obsessed with quality.
-            </p>
-            <ul className="text-blue-300 text-base flex flex-col gap-2">
-              <li className="flex items-center gap-3">
-                <span>⚡</span> 48-hour kickoff
-              </li>
-              <li className="flex items-center gap-3">
-                <span>🚀</span> Product-ready MVPs
-              </li>
-              <li className="flex items-center gap-3">
-                <span>🤝</span> Dedicated team support
-              </li>
-            </ul>
+            <div className="space-y-8">
+              <div className="flex items-center gap-4">
+                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <span className="text-lg font-medium text-neutral-300">48-hour kickoff</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                <span className="text-lg font-medium text-neutral-300">Product-ready MVPs</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                <span className="text-lg font-medium text-neutral-300">Dedicated team support</span>
+              </div>
+            </div>
+
+            <div className="space-y-6 pt-8 border-t border-neutral-800">
+              <h3 className="text-2xl font-heading font-bold text-white">Other ways to reach us</h3>
+              <div className="space-y-4">
+                <a href="mailto:0x1labs0x1@gmail.com" className="flex items-center gap-4 text-neutral-300 hover:text-white transition-colors">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                  </svg>
+                  0x1labs0x1@gmail.com
+                </a>
+              </div>
+            </div>
           </motion.div>
 
           <motion.form
-            className="glass-effect p-8 rounded-2xl flex flex-col gap-5"
+            className="bg-neutral-800/50 backdrop-blur-xl border border-neutral-700 p-8 rounded-3xl space-y-6"
             onSubmit={handleSubmit}
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
             transition={{ duration: 1, delay: 0.4 }}
           >
-            <div className="flex gap-4 flex-wrap">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
                 type="text"
                 name="name"
@@ -125,7 +143,7 @@ const Contact = () => {
                 onChange={handleChange}
                 required
                 disabled={loading}
-                className="flex-1 min-w-[200px] px-4 py-3 bg-slate-800 border border-white/10 text-white text-base rounded-lg font-heading placeholder:text-slate-400 focus:outline-none focus:border-primary-blue transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-4 bg-neutral-700/50 border border-neutral-600 text-white placeholder:text-neutral-400 rounded-xl focus:outline-none focus:border-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <input
                 type="email"
@@ -135,52 +153,57 @@ const Contact = () => {
                 onChange={handleChange}
                 required
                 disabled={loading}
-                className="flex-1 min-w-[200px] px-4 py-3 bg-slate-800 border border-white/10 text-white text-base rounded-lg font-heading placeholder:text-slate-400 focus:outline-none focus:border-primary-blue transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-4 bg-neutral-700/50 border border-neutral-600 text-white placeholder:text-neutral-400 rounded-xl focus:outline-none focus:border-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
 
             <textarea
               name="message"
               placeholder="Tell us what you're building..."
-              rows={5}
+              rows={6}
               value={formData.message}
               onChange={handleChange}
               required
               disabled={loading}
-              className="px-4 py-3 bg-slate-800 border border-white/10 text-white text-base rounded-lg font-heading placeholder:text-slate-400 focus:outline-none focus:border-primary-blue transition-colors resize-vertical disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-4 bg-neutral-700/50 border border-neutral-600 text-white placeholder:text-neutral-400 rounded-xl focus:outline-none focus:border-white transition-colors resize-vertical disabled:opacity-50 disabled:cursor-not-allowed"
             />
 
             <button
               type="submit"
               disabled={loading}
-              className="self-start bg-gradient-brand text-white px-6 py-3 font-semibold text-base border-none rounded-full cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center gap-2"
+              className="w-full bg-white text-neutral-900 px-8 py-4 font-semibold text-lg rounded-xl transition-all duration-300 hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                  <div className="w-5 h-5 border-2 border-neutral-500/20 border-t-neutral-500 rounded-full animate-spin"></div>
                   Sending...
                 </>
               ) : (
-                'Start the Conversation →'
+                <>
+                  Start the Conversation
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </>
               )}
             </button>
 
             {message && (
               <motion.div
-                className={`mt-4 p-4 rounded-lg text-base ${
+                className={`p-4 rounded-xl text-base ${
                   message.type === 'success' 
-                    ? 'bg-primary-mint text-white' 
-                    : 'bg-red-500 text-white'
+                    ? 'bg-green-500/20 border border-green-500/30 text-green-300' 
+                    : 'bg-red-500/20 border border-red-500/30 text-red-300'
                 }`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: displayMessage ? 1 : 0, y: displayMessage ? 0 : -10 }}
-                transition={{ duration: 1, ease: "easeInOut" }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
               >
                 {message.text}
               </motion.div>
             )}
           </motion.form>
-        </motion.div>
+        </div>
       </div>
     </section>
   )
