@@ -50,17 +50,19 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled
-        ? 'bg-white/95 backdrop-blur-md shadow-md'
-        : 'bg-white/95 backdrop-blur-md'
+        ? 'bg-white backdrop-blur-md shadow-md'
+        : 'bg-white backdrop-blur-md'
     } px-8 py-4`}>
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <Link
           href="#hero"
           className="flex items-center gap-3 hover:scale-105 transition-transform duration-300"
         >
-          <span className="font-sora text-4xl font-black text-gray-900 tracking-tight hover:text-primary-blue transition-colors duration-300">
-            0x1
-          </span>
+          <img
+            src="/favicon.svg"
+            alt="0x1 Logo"
+            className="w-16 h-16 hover:scale-105 transition-transform duration-300"
+          />
         </Link>
 
         <ul className="hidden md:flex gap-12 list-none">
