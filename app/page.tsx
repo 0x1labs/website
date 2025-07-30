@@ -15,7 +15,6 @@ export default function Home() {
       <Hero />
       <FloatingElements />
       <WhatWeDo />
-      <Process />
       <Products />
       <Team />
       <Contact />

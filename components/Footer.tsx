@@ -10,22 +10,19 @@ const Footer = () => {
   ]
 
   const socialLinks = [
-    { href: 'https://twitter.com', label: 'Twitter', external: true },
+    // { href: 'https://twitter.com', label: 'Twitter', external: true },
     { href: 'https://github.com', label: 'GitHub', external: true },
     { href: 'mailto:0x1labs0x1@gmail.com', label: 'Email', external: false }
   ]
 
   return (
     <footer className="bg-neutral-900 text-white">
-      <div className="max-w-7xl mx-auto container-padding py-20">
+      <div className="max-w-7xl mx-auto container-padding py-5">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-16">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <span className="font-heading text-lg font-black text-neutral-900">0x1</span>
-              </div>
               <span className="font-heading text-2xl font-black text-white">
                 0x1 Labs
               </span>
@@ -93,31 +90,21 @@ const Footer = () => {
               <p className="text-neutral-400 text-sm leading-relaxed">
                 Ready to build something amazing? Let's start the conversation.
               </p>
-              <a 
-                href="#contact"
-                className="inline-flex items-center gap-2 text-white bg-neutral-800 hover:bg-neutral-700 px-6 py-3 rounded-full transition-all duration-300 font-medium mt-4"
-              >
-                Start a Project
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </a>
             </div>
           </div>
         </div>
-
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-neutral-800">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-neutral-500">
-              © 2025 0x1 Labs. All rights reserved.
+              © {new Date().getFullYear()} 0x1 Labs. All rights reserved.
             </div>
             <div className="flex gap-6 text-sm">
               <a href="#" className="text-neutral-500 hover:text-neutral-300 transition-colors duration-300">
-                Privacy Policy
+          Privacy Policy
               </a>
               <a href="#" className="text-neutral-500 hover:text-neutral-300 transition-colors duration-300">
-                Terms of Service
+          Terms of Service
               </a>
             </div>
           </div>

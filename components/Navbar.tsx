@@ -5,7 +5,6 @@ import Link from 'next/link'
 
 const navLinks = [
   { href: '#what-we-do', label: 'Services' },
-  { href: '#process', label: 'Process' },
   { href: '#products', label: 'Work' },
   { href: '#team', label: 'About' },
   { href: '#contact', label: 'Contact' },
@@ -54,13 +53,16 @@ const Navbar = () => {
         : 'bg-white/80 backdrop-blur-md'
     } container-padding py-6`}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
+        {/* Desktop: logo left, nav right */}
         <Link
           href="#hero"
-          className="flex items-center gap-3 hover:scale-105 transition-all duration-300 group"
+          className="flex items-center gap-3 hover:scale-105 transition-all duration-300 group lg:block hidden"
         >
-          <span className="font-heading text-2xl font-black text-neutral-900 tracking-tight group-hover:text-blue-600 transition-colors duration-300">
-            0x1
-          </span>
+          <img
+            src="/favicon.svg"
+            alt="0x1 Logo"
+            className="w-16 h-16 hover:scale-105 transition-transform duration-300"
+          />
         </Link>
 
         <ul className="hidden lg:flex gap-10 list-none">
@@ -83,12 +85,19 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Mobile menu button */}
-        <button className="lg:hidden p-2 hover:bg-neutral-100 rounded-lg transition-colors duration-200">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-neutral-900">
-            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
-        </button>
+        {/* Mobile: logo centered */}
+        <div className="w-full flex justify-center lg:hidden">
+          <Link
+            href="#hero"
+            className="flex items-center gap-3 hover:scale-105 transition-all duration-300 group"
+          >
+            <img
+              src="/favicon.svg"
+              alt="0x1 Logo"
+              className="w-16 h-16 hover:scale-105 transition-transform duration-300"
+            />
+          </Link>
+        </div>
       </div>
     </nav>
   )

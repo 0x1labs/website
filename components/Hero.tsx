@@ -88,22 +88,22 @@ const Hero = () => {
         </motion.div>
       </div>
       
-      {/* Scroll Indicator */}
-      <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+    {/* Scroll Indicator */}
+    <motion.div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-      >
+    >
         <div className="flex flex-col items-center gap-2 text-neutral-400">
-          <span className="text-sm font-medium">Scroll</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-0.5 h-8 bg-neutral-300 rounded-full"
-          />
+            <span className="text-sm font-medium">Scroll</span>
+            <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-0.5 h-8 bg-neutral-300 rounded-full"
+            />
         </div>
-      </motion.div>
+    </motion.div>
     </section>
   )
 }
