@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const navLinks = [
-  { href: '#what-we-do', label: 'What We Do' },
-  { href: '#process', label: 'Process' },
-  { href: '#products', label: 'Products' },
-  { href: '#team', label: 'Team' },
+  { href: '#what-we-do', label: 'Services' },
+  { href: '#products', label: 'Work' },
+  { href: '#team', label: 'About' },
   { href: '#contact', label: 'Contact' },
 ]
 
@@ -24,8 +23,8 @@ const Navbar = () => {
 
     const observerOptions = {
       root: null,
-      rootMargin: '0px',
-      threshold: 0.6,
+      rootMargin: '-20% 0px -80% 0px',
+      threshold: 0,
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -48,15 +47,16 @@ const Navbar = () => {
   }, [])
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       scrolled
-        ? 'bg-white backdrop-blur-md shadow-md'
-        : 'bg-white backdrop-blur-md'
-    } px-8 py-4`}>
-      <div className="max-w-6xl mx-auto flex justify-between items-center">
+        ? 'bg-white/90 backdrop-blur-xl shadow-lg border-b border-neutral-200/50'
+        : 'bg-white/80 backdrop-blur-md'
+    } container-padding py-6`}>
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        {/* Desktop: logo left, nav right */}
         <Link
           href="#hero"
-          className="flex items-center gap-3 hover:scale-105 transition-transform duration-300"
+          className="flex items-center gap-3 hover:scale-105 transition-all duration-300 group lg:block hidden"
         >
           <img
             src="/favicon.svg"
@@ -65,25 +65,39 @@ const Navbar = () => {
           />
         </Link>
 
-        <ul className="hidden md:flex gap-12 list-none">
+        <ul className="hidden lg:flex gap-10 list-none">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className={`text-lg font-semibold tracking-wide transition-all duration-300 hover:scale-105 relative group
+                className={`text-base font-medium transition-all duration-300 relative group py-2
                   ${activeSection === link.href
-                    ? 'text-primary-blue'
-                    : 'text-primary-gray hover:text-primary-blue'}
+                    ? 'text-neutral-900'
+                    : 'text-neutral-600 hover:text-neutral-900'}
                 `}
               >
                 {link.label}
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-brand transition-all duration-300
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-neutral-900 transition-all duration-300
                   ${activeSection === link.href ? 'w-full' : 'w-0 group-hover:w-full'}
                 `}></span>
               </a>
             </li>
           ))}
         </ul>
+
+        {/* Mobile: logo centered */}
+        <div className="w-full flex justify-center lg:hidden">
+          <Link
+            href="#hero"
+            className="flex items-center gap-3 hover:scale-105 transition-all duration-300 group"
+          >
+            <img
+              src="/favicon.svg"
+              alt="0x1 Logo"
+              className="w-16 h-16 hover:scale-105 transition-transform duration-300"
+            />
+          </Link>
+        </div>
       </div>
     </nav>
   )
