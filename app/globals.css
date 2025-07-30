@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import '@fontsource/sora'; 
+@layer base {
+  :root {
+    --font-inter: 'Inter', sans-serif;
+    --font-jetbrains-mono: 'JetBrains Mono', monospace;
+    --font-sora: 'Sora', sans-serif;
+  }
+  
+  * {
+    @apply box-border;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-extrabold leading-tight tracking-tight text-primary-navy;
+  }
+  
+  h1 { @apply text-5xl; }
+  h2 { @apply text-4xl; }
+  h3 { @apply text-2xl; }
+  h4 { @apply text-xl; }
+  
+  p {
+    @apply leading-relaxed text-primary-gray;
+  }
+}
+
+@layer components {
+  .font-primary {
+    font-family: var(--font-inter);
+  }
+  
+  .font-mono {
+    font-family: var(--font-jetbrains-mono);
+  }
+  
+  .font-heading {
+    font-family: var(--font-sora);
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-blue to-primary-purple bg-clip-text text-transparent;
+  }
+  
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-xl;
+  }
+  
+  .glass-effect {
+    @apply bg-white/5 backdrop-blur-lg;
+  }
+}
+
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+  
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
+  
+  .animation-delay-600 {
+    animation-delay: 0.6s;
+  }
+  
+  .animation-delay-800 {
+    animation-delay: 0.8s;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-primary-light;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-blue rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary-purple;
+}
+
+/* Selection */
+::selection {
+  @apply bg-primary-blue/20 text-primary-navy;
+}
