@@ -7,42 +7,43 @@ import { useRef, useState } from 'react'
 const projects = [
   {
     id: '01',
+    title: 'Diff Checker',
+    category: 'Text Comparison Tool',
+    description: 'Advanced text comparison tool that instantly highlights differences between documents. Perfect for developers, writers, and content creators who need precise change detection.',
+    status: 'On the Market',
+    statusColor: 'bg-green-500',
+    metrics: ['Real-time Diff', 'Side-by-side View', 'Export Options'],
+    color: 'from-emerald-500 to-teal-500',
+    year: '2024',
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=800&fit=crop&crop=center&auto=format&q=80',
+    imageAlt: 'Code comparison and diff visualization interface',
+    link: 'https://compare-diff.netlify.app/'
+  },
+  {
+    id: '02',
+    title: 'Project Nexus',
+    category: 'Blockchain Platform',
+    description: 'Next-generation blockchain infrastructure powering decentralized applications. Built for scalability, security, and seamless developer experience in the Web3 ecosystem.',
+    status: 'Coming Soon',
+    statusColor: 'bg-orange-500',
+    metrics: ['Web3 Native', 'Zero Gas Fees', 'Cross-chain'],
+    color: 'from-violet-500 to-purple-700',
+    year: '2025',
+    image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&h=800&fit=crop&crop=center&auto=format&q=80',
+    imageAlt: 'Blockchain network visualization with nodes and connections'
+  },
+  {
+    id: '03',
     title: 'MyRide',
     category: 'Mobility Platform',
-    description: 'Smart mobility platform connecting riders with sustainable transport options. Making urban travel seamless and eco-friendly across 15+ cities.',
-    status: 'Live Product',
-    statusColor: 'bg-green-500',
-    metrics: ['50K+ Users', '15 Cities', '2M+ Rides'],
+    description: 'A vehicle companion app built for riders who take pride in their machines. It offers a seamless way to track service history, receive maintenance reminders, schedule appointments, and access complete information about their vehicles.',
+    status: 'On the Labs',
+    statusColor: 'bg-blue-500',
+    metrics: ['iOS|Android', 'Web App'],
     color: 'from-blue-500 to-cyan-500',
     year: '2023',
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=800&fit=crop&crop=center&auto=format&q=80',
     imageAlt: 'Modern ride-sharing mobile app interface with map and booking features'
-  },
-  {
-    id: '02',
-    title: 'DataFlow',
-    category: 'Analytics Dashboard',
-    description: 'Real-time analytics dashboard for modern product teams. Transform your data into actionable insights with ML-powered intelligence.',
-    status: 'In Beta',
-    statusColor: 'bg-blue-500',
-    metrics: ['Real-time Processing', '99.9% Uptime', 'ML-Powered'],
-    color: 'from-purple-500 to-pink-500',
-    year: '2024',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop&crop=center&auto=format&q=80',
-    imageAlt: 'Professional analytics dashboard with charts, graphs and data visualization'
-  },
-  {
-    id: '03',
-    title: 'Project Cipher',
-    category: 'Security Platform',
-    description: 'Revolutionary approach to digital identity and privacy. The future of secure authentication with quantum-safe encryption.',
-    status: 'Coming Soon',
-    statusColor: 'bg-orange-500',
-    metrics: ['Zero-Trust', 'Quantum-Safe', 'Decentralized'],
-    color: 'from-violet-500 to-purple-700',
-    year: '2025',
-    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=800&fit=crop&crop=center&auto=format&q=80',
-    imageAlt: 'Cybersecurity interface with encryption and authentication features'
   }
 ]
 
@@ -228,38 +229,43 @@ const Products = () => {
                     ))}
                   </motion.div>
                   
-                  {/* CTA */}
-                  {/* <motion.div 
-                    className="pt-4 lg:pt-8"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <motion.button 
-                      className="group inline-flex items-center gap-3 px-6 lg:px-8 py-3 lg:py-4 bg-neutral-900 text-white font-bold text-base lg:text-lg rounded-full hover:bg-neutral-800 transition-all duration-300 overflow-hidden relative"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                  {/* CTA - Only for Diff Checker */}
+                  {project.link && (
+                    <motion.div 
+                      className="pt-4 lg:pt-8"
+                      whileHover={{ scale: 1.02 }}
                     >
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100"
-                        initial={{ x: "100%" }}
-                        whileHover={{ x: "0%" }}
-                        transition={{ duration: 0.3 }}
-                      />
-                      <span className="relative z-10 transition-colors duration-300">
-                        Explore Project
-                      </span>
-                      <motion.svg 
-                        width="20" 
-                        height="20" 
-                        viewBox="0 0 20 20" 
-                        fill="none" 
-                        className="relative z-10 transition-colors duration-300"
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                      <motion.a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-3 px-6 lg:px-8 py-3 lg:py-4 bg-neutral-900 text-white font-bold text-base lg:text-lg rounded-full hover:bg-neutral-800 transition-all duration-300 overflow-hidden relative"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
-                        <path d="M7 3L14 10L7 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </motion.svg>
-                    </motion.button>
-                  </motion.div> */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 opacity-0 group-hover:opacity-100"
+                          initial={{ x: "100%" }}
+                          whileHover={{ x: "0%" }}
+                          transition={{ duration: 0.3 }}
+                        />
+                        <span className="relative z-10 transition-colors duration-300">
+                          Try it Live
+                        </span>
+                        <motion.svg 
+                          width="20" 
+                          height="20" 
+                          viewBox="0 0 20 20" 
+                          fill="none" 
+                          className="relative z-10 transition-colors duration-300"
+                          animate={{ x: [0, 5, 0] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <path d="M7 3L14 10L7 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </motion.svg>
+                      </motion.a>
+                    </motion.div>
+                  )}
                 </motion.div>
                 
                 {/* Visual Side */}
@@ -267,153 +273,159 @@ const Products = () => {
                   className={`lg:col-span-7 ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''} order-1 lg:order-none`}
                   whileHover={{ 
                     scale: 1.02,
-                    rotateY: index % 2 === 0 ? -5 : 5,
+                    rotateY: index % 2 === 0 ? -2 : 2,
                   }}
                   transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
                 >
                   <div className="relative group/visual">
-                    {/* Main Visual Container */}
+                    {/* Main Visual Container - Card Frame */}
                     <motion.div 
-                      className={`relative h-64 md:h-80 lg:h-[500px] bg-gradient-to-br ${project.color} rounded-3xl overflow-hidden`}
+                      className="relative h-64 md:h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl"
                       animate={activeProject === index ? {
                         boxShadow: [
-                          "0 0 0 0 rgba(59, 130, 246, 0)",
-                          "0 0 0 20px rgba(59, 130, 246, 0.1)",
-                          "0 0 0 0 rgba(59, 130, 246, 0)"
+                          "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                          "0 25px 50px -12px rgba(59, 130, 246, 0.4)",
+                          "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
                         ]
                       } : {}}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      {/* Stock Image - Hidden by default, visible on hover */}
-                      <motion.div
-                        className="absolute inset-0 z-20"
-                        initial={{ opacity: 0 }}
-                        animate={{ 
-                          opacity: activeProject === index ? 1 : 0
-                        }}
-                        transition={{ duration: 0.5 }}
-                      >
+                      {/* Background Image - Always Visible */}
+                      <div className="absolute inset-0 z-10">
                         <img
                           src={project.image}
                           alt={project.imageAlt}
                           className="w-full h-full object-cover"
                           loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-black/20"></div>
-                      </motion.div>
+                        {/* Subtle Gradient Overlay */}
+                        <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-20`}></div>
+                      </div>
 
-                      {/* Original Diagram Elements - Dimmed on hover */}
+                      {/* Floating UI Elements Overlay */}
                       <motion.div
-                        className="absolute inset-0 z-10"
+                        className="absolute inset-0 z-20 p-6 lg:p-8"
                         animate={{ 
-                          opacity: activeProject === index ? 0.3 : 1
+                          opacity: activeProject === index ? 1 : 0.7
                         }}
                         transition={{ duration: 0.5 }}
                       >
-                        {/* Animated Background Pattern */}
-                        <motion.div
-                          className="absolute inset-0 opacity-20"
-                          style={{
-                            background: `
-                              radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%),
-                              radial-gradient(circle at 80% 80%, rgba(255,255,255,0.2) 0%, transparent 50%),
-                              linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%)
-                            `
-                          }}
-                          animate={{
-                            backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
-                          }}
-                          transition={{ duration: 8, repeat: Infinity }}
-                        />
+                        {/* Project-specific floating elements */}
+                        {index === 0 && (
+                          <>
+                            {/* Code diff visualization */}
+                            <motion.div 
+                              className="absolute top-6 left-6 w-32 h-8 bg-green-500/20 backdrop-blur-sm rounded border-l-4 border-green-500"
+                              animate={{ opacity: [0.6, 1, 0.6] }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                            />
+                            <motion.div 
+                              className="absolute top-16 left-6 w-28 h-8 bg-red-500/20 backdrop-blur-sm rounded border-l-4 border-red-500"
+                              animate={{ opacity: [0.6, 1, 0.6] }}
+                              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                            />
+                            <motion.div 
+                              className="absolute bottom-8 right-8 w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center"
+                              animate={{ scale: [1, 1.1, 1] }}
+                              transition={{ duration: 3, repeat: Infinity }}
+                            >
+                              <span className="text-white text-2xl">≠</span>
+                            </motion.div>
+                          </>
+                        )}
                         
-                        {/* Floating Elements */}
-                        <div className="absolute inset-0 p-6 lg:p-8">
-                          {/* Project-specific elements */}
-                          {index === 0 && (
-                            <>
-                              <motion.div 
-                                className="absolute top-6 lg:top-8 left-6 lg:left-8 w-24 lg:w-32 h-16 lg:h-20 bg-white/20 rounded-2xl backdrop-blur-sm"
-                                animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
-                                transition={{ duration: 4, repeat: Infinity }}
+                        {index === 1 && (
+                          <>
+                            {/* Blockchain nodes */}
+                            <motion.div 
+                              className="absolute top-8 left-8 w-4 h-4 bg-purple-400 rounded-full"
+                              animate={{ 
+                                scale: [1, 1.5, 1],
+                                boxShadow: ["0 0 0 0 rgba(168, 85, 247, 0.4)", "0 0 0 10px rgba(168, 85, 247, 0)", "0 0 0 0 rgba(168, 85, 247, 0)"]
+                              }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                            />
+                            <motion.div 
+                              className="absolute top-16 right-16 w-4 h-4 bg-blue-400 rounded-full"
+                              animate={{ 
+                                scale: [1, 1.5, 1],
+                                boxShadow: ["0 0 0 0 rgba(59, 130, 246, 0.4)", "0 0 0 10px rgba(59, 130, 246, 0)", "0 0 0 0 rgba(59, 130, 246, 0)"]
+                              }}
+                              transition={{ duration: 2, repeat: Infinity, delay: 0.7 }}
+                            />
+                            <motion.div 
+                              className="absolute bottom-16 left-16 w-4 h-4 bg-emerald-400 rounded-full"
+                              animate={{ 
+                                scale: [1, 1.5, 1],
+                                boxShadow: ["0 0 0 0 rgba(52, 211, 153, 0.4)", "0 0 0 10px rgba(52, 211, 153, 0)", "0 0 0 0 rgba(52, 211, 153, 0)"]
+                              }}
+                              transition={{ duration: 2, repeat: Infinity, delay: 1.4 }}
+                            />
+                            {/* Connection lines */}
+                            <svg className="absolute inset-0 w-full h-full">
+                              <motion.line 
+                                x1="10%" y1="20%" x2="90%" y2="30%" 
+                                stroke="rgba(255,255,255,0.3)" 
+                                strokeWidth="2"
+                                strokeDasharray="5,5"
+                                animate={{ strokeDashoffset: [0, -10] }}
+                                transition={{ duration: 2, repeat: Infinity }}
                               />
-                              <motion.div 
-                                className="absolute top-16 lg:top-20 right-6 lg:right-8 w-20 lg:w-24 h-20 lg:h-24 bg-white/15 rounded-full backdrop-blur-sm"
-                                animate={{ scale: [1, 1.1, 1], y: [0, 15, 0] }}
-                                transition={{ duration: 5, repeat: Infinity, delay: 1 }}
+                              <motion.line 
+                                x1="90%" y1="30%" x2="20%" y2="80%" 
+                                stroke="rgba(255,255,255,0.3)" 
+                                strokeWidth="2"
+                                strokeDasharray="5,5"
+                                animate={{ strokeDashoffset: [0, -10] }}
+                                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
                               />
-                              <motion.div 
-                                className="absolute bottom-6 lg:bottom-8 left-1/2 transform -translate-x-1/2 w-32 lg:w-40 h-4 lg:h-6 bg-white/25 rounded-full"
-                                animate={{ scaleX: [1, 1.2, 1] }}
-                                transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                              />
-                            </>
-                          )}
-                          
-                          {index === 1 && (
-                            <>
-                              <motion.div 
-                                className="absolute top-8 lg:top-12 left-8 lg:left-12 w-12 lg:w-16 h-32 lg:h-40 bg-white/20 rounded-xl"
-                                animate={{ height: [128, 160, 128] }}
-                                transition={{ duration: 3, repeat: Infinity }}
-                              />
-                              <motion.div 
-                                className="absolute top-8 lg:top-12 left-24 lg:left-32 w-12 lg:w-16 h-24 lg:h-32 bg-white/15 rounded-xl"
-                                animate={{ height: [96, 128, 96] }}
-                                transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                              />
-                              <motion.div 
-                                className="absolute top-8 lg:top-12 left-40 lg:left-52 w-12 lg:w-16 h-40 lg:h-48 bg-white/25 rounded-xl"
-                                animate={{ height: [160, 192, 160] }}
-                                transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-                              />
-                              <motion.div 
-                                className="absolute bottom-6 lg:bottom-8 right-6 lg:right-8 w-24 lg:w-32 h-16 lg:h-20 bg-white/20 rounded-2xl backdrop-blur-sm"
-                                animate={{ rotate: [0, 360] }}
-                                transition={{ duration: 20, repeat: Infinity }}
-                              />
-                            </>
-                          )}
-                          
-                          {index === 2 && (
-                            <>
-                              <motion.div 
-                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 lg:w-40 h-32 lg:h-40 border-4 border-white/30 rounded-full"
-                                animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
-                                transition={{ duration: 10, repeat: Infinity }}
-                              />
-                              <motion.div 
-                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 lg:w-24 h-20 lg:h-24 border-2 border-white/40 rounded-full"
-                                animate={{ rotate: [360, 0], scale: [1, 0.9, 1] }}
-                                transition={{ duration: 8, repeat: Infinity }}
-                              />
-                              <motion.div 
-                                className="absolute top-6 lg:top-8 left-6 lg:left-8 w-6 lg:w-8 h-6 lg:h-8 bg-white/30 rounded-full"
-                                animate={{ 
-                                  x: [0, 100, 200, 100, 0],
-                                  y: [0, -50, 0, 50, 0]
-                                }}
-                                transition={{ duration: 6, repeat: Infinity }}
-                              />
-                            </>
-                          )}
-                          
-                          {/* Large Background Icon/Letter */}
-                          <motion.div 
-                            className="absolute bottom-6 lg:bottom-8 right-6 lg:right-8 text-6xl lg:text-8xl font-heading font-black text-black/10"
-                            animate={activeProject === index ? { 
-                              scale: [1, 1.05, 1],
-                              rotate: [0, 5, 0]
-                            } : {}}
-                            transition={{ duration: 3, repeat: Infinity }}
-                          >
-                            {project.title.charAt(0)}
-                          </motion.div>
-                        </div>
+                            </svg>
+                          </>
+                        )}
+                        
+                        {index === 2 && (
+                          <>
+                            {/* Map pins and route */}
+                            <motion.div 
+                              className="absolute top-12 left-12 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center"
+                              animate={{ y: [0, -5, 0] }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                            >
+                              <div className="w-2 h-2 bg-white rounded-full"></div>
+                            </motion.div>
+                            <motion.div 
+                              className="absolute bottom-16 right-16 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"
+                              animate={{ y: [0, -5, 0] }}
+                              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                            >
+                              <div className="w-2 h-2 bg-white rounded-full"></div>
+                            </motion.div>
+                            <motion.div 
+                              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center"
+                              animate={{ rotate: [0, 360] }}
+                              transition={{ duration: 8, repeat: Infinity }}
+                            >
+                              <span className="text-white text-xl">🚗</span>
+                            </motion.div>
+                          </>
+                        )}
+                      </motion.div>
+
+                      {/* Project Letter Watermark */}
+                      <motion.div 
+                        className="absolute bottom-6 right-6 text-6xl lg:text-8xl font-heading font-black text-white/10 z-30"
+                        animate={activeProject === index ? { 
+                          scale: [1, 1.05, 1],
+                          rotate: [0, 5, 0]
+                        } : {}}
+                        transition={{ duration: 3, repeat: Infinity }}
+                      >
+                        {project.title.charAt(0)}
                       </motion.div>
                       
-                      {/* Hover Overlay */}
+                      {/* Hover Enhancement Overlay */}
                       <motion.div
-                        className="absolute inset-0 bg-black/10 opacity-0 group-hover/visual:opacity-100 transition-opacity duration-500 z-30"
+                        className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover/visual:opacity-100 transition-opacity duration-500 z-40"
                         initial={false}
                       />
                     </motion.div>

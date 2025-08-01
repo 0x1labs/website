@@ -7,29 +7,29 @@ import { useRef, useState } from 'react'
 const testimonials = [
   {
     id: 1,
-    quote: "Working with 0x1 Labs felt like having a product-obsessed cofounder. They don't just build — they think, challenge, and push for excellence.",
-    author: "Sarah Chen",
-    role: "Founder",
-    company: "TechFlow",
-    avatar: "SC",
+    quote: "Working with 0x1 Labs felt like having a product-obsessed co-founder. They don't just build — they think, challenge, and push for excellence.",
+    author: "Karun Shrestha",
+    role: "Co-Founder",
+    company: "Kerkar Creations",
+    avatar: "KS",
     gradient: "from-blue-500 to-cyan-500"
   },
   {
     id: 2,
     quote: "Their speed is unmatched. What would take our team months, they delivered in weeks. The quality? Absolutely pristine.",
-    author: "Marcus Rivera",
-    role: "CTO",
-    company: "DataCorp",
-    avatar: "MR",
+    author: "Suraj Pandey",
+    role: "CEO",
+    company: "Techniti Nepal",
+    avatar: "SP",
     gradient: "from-purple-500 to-pink-500"
   },
   {
     id: 3,
     quote: "They transformed our scattered ideas into a cohesive product strategy. Now we have a clear roadmap and the execution to match.",
-    author: "Elena Vasquez",
+    author: "Rabin Adhikari",
     role: "Head of Product",
-    company: "InnovateLab",
-    avatar: "EV",
+    company: "PetsNepal",
+    avatar: "RA",
     gradient: "from-green-500 to-emerald-500"
   }
 ]

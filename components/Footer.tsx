@@ -3,7 +3,6 @@ import Link from 'next/link'
 const Footer = () => {
   const footerLinks = [
     { href: '#what-we-do', label: 'Services' },
-    { href: '#process', label: 'Process' },
     { href: '#products', label: 'Work' },
     { href: '#team', label: 'About' },
     { href: '#contact', label: 'Contact' }
@@ -98,14 +97,6 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-neutral-500">
               © {new Date().getFullYear()} 0x1 Labs. All rights reserved.
-            </div>
-            <div className="flex gap-6 text-sm">
-              <a href="#" className="text-neutral-500 hover:text-neutral-300 transition-colors duration-300">
-          Privacy Policy
-              </a>
-              <a href="#" className="text-neutral-500 hover:text-neutral-300 transition-colors duration-300">
-          Terms of Service
-              </a>
             </div>
           </div>
         </div>
