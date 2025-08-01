@@ -13,7 +13,7 @@ const Contact = () => {
     message: ''
   })
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null)
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
   const [displayMessage, setDisplayMessage] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,22 +43,22 @@ const Contact = () => {
 
       const result = await response.json()
       console.log('data', result)
-      setMessage({ 
-        type: 'success', 
-        text: 'Thank you for your message! We truly appreciate you reaching out and will get back to you as soon as possible.' 
+      setMessage({
+        type: 'success',
+        text: 'Thank you for your message! We truly appreciate you reaching out and will get back to you as soon as possible.'
       })
       setFormData({ name: '', email: '', message: '' })
       setDisplayMessage(true)
-      
+
       setTimeout(() => {
         setDisplayMessage(false)
         setTimeout(() => setMessage(null), 300)
       }, 5000)
     } catch (err) {
       console.error('err', err)
-      setMessage({ 
-        type: 'error', 
-        text: 'Form submission failed. Please try again later.' 
+      setMessage({
+        type: 'error',
+        text: 'Form submission failed. Please try again later.'
       })
       setDisplayMessage(true)
     } finally {
@@ -116,12 +116,12 @@ const Contact = () => {
             <div className="space-y-6 pt-8 border-t border-neutral-800">
               <h3 className="text-2xl font-heading font-bold text-white">Other ways to reach us</h3>
               <div className="space-y-4">
-                <a href="mailto:0x1labs0x1@gmail.com" className="flex items-center gap-4 text-neutral-300 hover:text-white transition-colors">
+                <a href="mailto:hello@0x1labs.com.com" className="flex items-center gap-4 text-neutral-300 hover:text-white transition-colors">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
-                  0x1labs0x1@gmail.com
+                  hello@0x1labs.com
                 </a>
               </div>
             </div>
@@ -182,7 +182,7 @@ const Contact = () => {
                 <>
                   Start the Conversation
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </>
               )}
@@ -190,11 +190,10 @@ const Contact = () => {
 
             {message && (
               <motion.div
-                className={`p-4 rounded-xl text-base ${
-                  message.type === 'success' 
-                    ? 'bg-green-500/20 border border-green-500/30 text-green-300' 
-                    : 'bg-red-500/20 border border-red-500/30 text-red-300'
-                }`}
+                className={`p-4 rounded-xl text-base ${message.type === 'success'
+                  ? 'bg-green-500/20 border border-green-500/30 text-green-300'
+                  : 'bg-red-500/20 border border-red-500/30 text-red-300'
+                  }`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: displayMessage ? 1 : 0, y: displayMessage ? 0 : -10 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
