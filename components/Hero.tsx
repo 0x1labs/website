@@ -89,7 +89,7 @@ const Hero = () => {
       </div>
       
     {/* Scroll Indicator */}
-    <motion.div 
+{/*     <motion.div 
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -103,7 +103,7 @@ const Hero = () => {
                 className="w-0.5 h-8 bg-neutral-300 rounded-full"
             />
         </div>
-    </motion.div>
+    </motion.div> */}
     </section>
   )
 }
