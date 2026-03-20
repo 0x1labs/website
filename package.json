@@ -11,11 +11,15 @@
   "dependencies": {
     "@fontsource/sora": "^5.2.6",
     "critters": "^0.0.25",
+    "csv-parse": "^6.2.1",
     "framer-motion": "^10.16.16",
+    "gray-matter": "^4.0.3",
     "lucide-react": "^0.302.0",
     "next": "14.0.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
