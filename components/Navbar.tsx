@@ -1,105 +1,154 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { Menu, X } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
 
-const navLinks = [
-  { href: '#what-we-do', label: 'Services' },
-  { href: '#products', label: 'Work' },
-  { href: '#team', label: 'About' },
-  { href: '#contact', label: 'Contact' },
+const links = [
+  { label: 'Services', href: '#services' },
+  { label: 'Work', href: '#work' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Careers', href: '/careers' },
 ]
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState('')
+  const pathname = usePathname()
+  const [open, setOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>('')
+
+  const normalized = useMemo(
+    () =>
+      links.map((item) => {
+        if (!item.href.startsWith('#')) return item
+        return { ...item, href: pathname === '/' ? item.href : `/${item.href}` }
+      }),
+    [pathname],
+  )
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
+    if (pathname !== '/') {
+      setActiveSection('')
+      return
     }
 
-    window.addEventListener('scroll', handleScroll)
+    const sections = ['services', 'work']
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section))
 
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -80% 0px',
-      threshold: 0,
-    }
+    if (!sections.length) return
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(`#${entry.target.id}`)
+    const updateActiveSection = () => {
+      const hash = window.location.hash.replace('#', '')
+      if (hash === 'services' || hash === 'work') {
+        setActiveSection(hash)
+        return
+      }
+
+      const trigger = Math.min(260, Math.max(140, window.innerHeight * 0.32))
+      let current = ''
+
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect()
+        if (rect.top <= trigger) {
+          current = section.id
         }
       })
-    }, observerOptions)
 
-    navLinks.forEach((link) => {
-      const section = document.querySelector(link.href)
-      if (section) observer.observe(section)
-    })
+      setActiveSection(current)
+    }
+
+    updateActiveSection()
+    window.addEventListener('scroll', updateActiveSection, { passive: true })
+    window.addEventListener('resize', updateActiveSection)
+    window.addEventListener('hashchange', updateActiveSection)
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
-      observer.disconnect()
+      window.removeEventListener('scroll', updateActiveSection)
+      window.removeEventListener('resize', updateActiveSection)
+      window.removeEventListener('hashchange', updateActiveSection)
     }
-  }, [])
+  }, [pathname])
+
+  const isActive = (href: string) => {
+    if (href.startsWith('#')) {
+      return pathname === '/' && activeSection === href.slice(1)
+    }
+    if (href === '/blog') {
+      return pathname === '/blog' || pathname.startsWith('/blog/')
+    }
+    if (href === '/careers') {
+      return pathname === '/careers' || pathname.startsWith('/careers/')
+    }
+    return pathname === href
+  }
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      scrolled
-        ? 'bg-white/90 backdrop-blur-xl shadow-lg border-b border-neutral-200/50'
-        : 'bg-white/80 backdrop-blur-md'
-    } container-padding py-6`}>
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        {/* Desktop: logo left, nav right */}
-        <Link
-          href="#hero"
-          className="flex items-center gap-3 hover:scale-105 transition-all duration-300 group lg:block hidden"
-        >
-          <img
-            src="/favicon.svg"
-            alt="0x1 Logo"
-            className="w-16 h-16 hover:scale-105 transition-transform duration-300"
-          />
+    <header className="fixed inset-x-0 top-4 z-50 px-4">
+      <nav className="content-wrap flex items-center justify-between rounded-2xl border border-white/20 bg-[#111111]/92 px-4 py-3.5 shadow-[0_16px_48px_rgba(0,0,0,0.55)] backdrop-blur-xl">
+        <Link href="/" className="font-heading text-lg font-bold tracking-tight text-white">
+          0x1 Labs
         </Link>
 
-        <ul className="hidden lg:flex gap-10 list-none">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className={`text-base font-medium transition-all duration-300 relative group py-2
-                  ${activeSection === link.href
-                    ? 'text-neutral-900'
-                    : 'text-neutral-600 hover:text-neutral-900'}
-                `}
+        <ul className="hidden items-center gap-6 md:flex">
+          {normalized.map((item) => (
+            <li key={item.label}>
+              <Link
+                href={item.href}
+                className={`px-0 py-1 text-sm font-semibold tracking-[0.01em] transition-colors duration-200 ${
+                  isActive(item.href)
+                    ? 'text-white'
+                    : 'text-zinc-100 hover:text-white'
+                }`}
               >
-                {link.label}
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-neutral-900 transition-all duration-300
-                  ${activeSection === link.href ? 'w-full' : 'w-0 group-hover:w-full'}
-                `}></span>
-              </a>
+                <span className="relative">
+                  {item.label}
+                  {isActive(item.href) && <span className="absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-white/90" aria-hidden="true" />}
+                </span>
+              </Link>
             </li>
           ))}
         </ul>
 
-        {/* Mobile: logo centered */}
-        <div className="w-full flex justify-center lg:hidden">
-          <Link
-            href="#hero"
-            className="flex items-center gap-3 hover:scale-105 transition-all duration-300 group"
-          >
-            <img
-              src="/favicon.svg"
-              alt="0x1 Logo"
-              className="w-16 h-16 hover:scale-105 transition-transform duration-300"
-            />
-          </Link>
+        <Link href={pathname === '/' ? '#contact' : '/#contact'} className="btn-primary hidden md:inline-flex">
+          Start a Project
+        </Link>
+
+        <button
+          type="button"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-zinc-100 md:hidden"
+          onClick={() => setOpen((value) => !value)}
+          aria-label="Toggle navigation"
+        >
+          {open ? <X size={18} /> : <Menu size={18} />}
+        </button>
+      </nav>
+
+      {open && (
+        <div className="content-wrap mt-2 rounded-2xl border border-white/20 bg-[#111111]/95 p-4 shadow-[0_16px_48px_rgba(0,0,0,0.55)] backdrop-blur-xl md:hidden">
+          <ul className="space-y-3">
+            {normalized.map((item) => (
+              <li key={item.label}>
+                <Link
+                  href={item.href}
+                  className={`block rounded-lg px-2 py-2 text-sm font-medium transition-colors duration-200 ${
+                    isActive(item.href) ? 'text-white underline underline-offset-4' : 'text-zinc-200 hover:bg-white/10'
+                  }`}
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href={pathname === '/' ? '#contact' : '/#contact'} className="btn-primary mt-2 w-full" onClick={() => setOpen(false)}>
+                Start a Project
+              </Link>
+            </li>
+          </ul>
         </div>
-      </div>
-    </nav>
+      )}
+    </header>
   )
 }
 
