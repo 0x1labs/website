@@ -1,41 +1,47 @@
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono, Sora } from 'next/font/google'
+import { JetBrains_Mono, Manrope, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ 
+const manrope = Manrope({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-manrope',
   display: 'swap',
 })
 
-const jetbrainsMono = JetBrains_Mono({ 
+const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains-mono',
-  display: 'swap', 
+  display: 'swap',
 })
 
-const sora = Sora({ 
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-sora',
+  variable: '--font-space-grotesk',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: '0x1 Labs - From Zero to One | Product Studio for Bold Ideas',
-  description: '0x1 Labs is a product studio that transforms bold ideas into reality. We craft software products with speed, clarity, and precision for ambitious founders and companies.',
-  keywords: 'product studio, MVP development, startup incubator, software development, rapid prototyping, founding team, product strategy',
+  title: '0x1 Labs - From Zero to One',
+  description:
+    '0x1 Labs is a product studio for founders and teams who want to ship clear, fast, and meaningful digital products.',
+  metadataBase: new URL('https://0x1labs.com'),
+  keywords:
+    'product studio, mvp development, startup engineering, software design, rapid prototyping, web3 product team',
   openGraph: {
-    title: '0x1 Labs - From Zero to One. Again and Again.',
-    description: 'We craft software products with speed, clarity, and precision. Partner with us to turn raw ideas into working products — fast.',
+    title: '0x1 Labs - From Zero to One',
+    description:
+      'We build product experiences with speed, clarity, and senior-level execution.',
     type: 'website',
     url: 'https://0x1labs.com',
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: '16x16' },
-      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/android-chrome-512x512.png', type: 'image/png', sizes: '512x512' },
+      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
     ],
-    apple: { url: '/favicon.ico', type: 'image/svg+xml' },
+    apple: { url: '/apple-touch-icon.png', type: 'image/png', sizes: '180x180' },
+    shortcut: '/android-chrome-512x512.png',
   },
 }
 
@@ -46,7 +52,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} ${jetbrainsMono.variable} ${sora.variable} font-primary text-base leading-normal text-primary-navy font-normal antialiased overflow-x-hidden bg-white`}>
+      <body
+        className={`${manrope.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable} antialiased overflow-x-hidden`}
+      >
         {children}
       </body>
     </html>
