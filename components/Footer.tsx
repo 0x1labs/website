@@ -18,10 +18,13 @@ const Footer = () => {
         <div>
           <h3 className="font-heading text-sm font-semibold uppercase tracking-[0.18em] text-zinc-200">Explore</h3>
           <ul className="mt-4 space-y-3 text-base text-zinc-300">
-            <li><Link href="/#services" className="hover:text-white">Services</Link></li>
-            <li><Link href="/#work" className="hover:text-white">Work</Link></li>
+            <li><Link href="/about" className="hover:text-white">About</Link></li>
+            <li><Link href="/services" className="hover:text-white">Services</Link></li>
+            <li><Link href="/work" className="hover:text-white">Work</Link></li>
             <li><Link href="/blog" className="hover:text-white">Blog</Link></li>
             <li><Link href="/careers" className="hover:text-white">Careers</Link></li>
+            <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
+            <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
           </ul>
         </div>
 
@@ -32,6 +35,10 @@ const Footer = () => {
               hello@0x1labs.com
             </a>
             <p className="mt-3 text-sm text-zinc-400">Kathmandu, Nepal</p>
+            <div className="mt-4 flex gap-3 text-sm">
+              <Link href="/privacy" className="text-zinc-400 hover:text-white">Privacy</Link>
+              <Link href="/terms" className="text-zinc-400 hover:text-white">Terms</Link>
+            </div>
           </div>
           <div className="rounded-2xl border border-white/15 bg-white/[0.05] p-2">
             <Image src={footerMascot} alt="0x1 Labs mascot" className="h-32 w-auto md:h-36" />

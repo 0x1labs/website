@@ -7,10 +7,18 @@ import wavingMascot from '@/assets/photo/mascot/waving.png'
 import namasteMascot from '@/assets/photo/mascot/namaste.png'
 import handshakingMascot from '@/assets/photo/mascot/handshaking.png'
 import { getOpenOpenings } from '@/lib/careers'
+import { breadcrumbJsonLd, siteUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Careers | 0x1 Labs',
-  description: 'Explore open roles at 0x1 Labs and apply through role-specific forms.',
+  title: 'Careers at 0x1 Labs - Join Our Product Team in Kathmandu',
+  description:
+    'Join 0x1 Labs in Kathmandu. We are hiring builders who care about craft, ownership, and shipping products that matter.',
+  alternates: { canonical: '/careers' },
+  openGraph: {
+    title: 'Careers at 0x1 Labs',
+    description: 'Explore open roles and apply to join our product strategy, design, and engineering team.',
+    url: `${siteUrl}/careers`,
+  },
 }
 
 const values = [
@@ -39,6 +47,10 @@ function formatDate(isoDate: string): string {
 
 export default async function CareersPage() {
   const openings = await getOpenOpenings()
+  const breadcrumb = breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Careers', path: '/careers' },
+  ])
 
   return (
     <main className="min-h-screen bg-[#090909] text-zinc-100">
@@ -127,6 +139,7 @@ export default async function CareersPage() {
       </section>
 
       <Footer />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
     </main>
   )
 }

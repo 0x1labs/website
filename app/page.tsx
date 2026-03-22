@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight, Briefcase, Newspaper, Sparkles } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { organizationJsonLd } from '@/lib/seo'
 import wavingMascot from '@/assets/photo/mascot/waving.png'
 import buildingMascot from '@/assets/photo/mascot/building.png'
 import thinkingMascot from '@/assets/photo/mascot/thinking.png'
@@ -68,15 +69,50 @@ const products = [
     title: 'Project Nexus',
     tag: 'In Development',
     summary: 'Web3-native infrastructure platform designed for composability and reliability.',
-    cta: 'Case Study Soon',
-    href: '/#work',
+    cta: 'View Snapshot',
+    href: '/work/project-nexus',
   },
   {
     title: 'MyRide',
     tag: 'Labs Build',
     summary: 'Mobility companion for maintenance history, scheduling, and lifecycle management.',
-    cta: 'Product Snapshot',
-    href: '/#work',
+    cta: 'View Snapshot',
+    href: '/work/myride',
+  },
+]
+
+const testimonials = [
+  {
+    quote:
+      '0x1 Labs helped us turn scattered requirements into a practical launch roadmap. Their team moved fast without losing product quality.',
+    by: 'Founder, B2B SaaS',
+  },
+  {
+    quote:
+      'The biggest win was clarity. We knew exactly what to build first, what to delay, and how to test assumptions with real users.',
+    by: 'Product Lead, Marketplace Startup',
+  },
+  {
+    quote:
+      'They operated like an embedded product team, not an external vendor. Planning and execution stayed tightly connected each week.',
+    by: 'CTO, Digital Platform Team',
+  },
+]
+
+const trustedBy = ['SaaS Platform', 'Fintech Product', 'Marketplace Team', 'Consumer App']
+
+const homepageFaq = [
+  {
+    q: 'How long does MVP development take?',
+    a: 'Most startup MVPs take 4-10 weeks depending on complexity, integrations, and decision turnaround speed.',
+  },
+  {
+    q: 'Do you work with founders outside Nepal?',
+    a: 'Yes. We are based in Kathmandu and work with global teams through structured async collaboration.',
+  },
+  {
+    q: 'What is your engagement model?',
+    a: 'We typically work in strategy, prototyping, MVP build, and post-launch growth phases.',
   },
 ]
 
@@ -107,10 +143,10 @@ export default function Home() {
               and senior execution.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="#contact" className="btn-primary">
+              <Link href="/contact" className="btn-primary">
                 Start a Project
               </Link>
-              <Link href="#services" className="btn-secondary">
+              <Link href="/services" className="btn-secondary">
                 See Our Process
               </Link>
             </div>
@@ -246,6 +282,32 @@ export default function Home() {
       </section>
 
       <section className="content-wrap pb-12">
+        <div className="rounded-[26px] border border-white/15 bg-black/80 p-6 md:p-10 lg:p-12">
+          <span className="eyebrow" style={{ color: '#cdcdcd' }}>Trusted By</span>
+          <h2 className="mt-4 text-white">Teams building ambitious products</h2>
+          <p className="mt-3 max-w-3xl text-zinc-300">
+            Selected collaboration highlights from startup and product teams across strategy, design, and engineering engagements.
+          </p>
+          <div className="mt-6 grid gap-3 md:grid-cols-4">
+            {trustedBy.map((logo) => (
+              <div key={logo} className="rounded-xl border border-white/15 bg-white/[0.04] px-4 py-3 text-center text-sm text-zinc-300">
+                {logo}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {testimonials.map((item) => (
+              <article key={item.by} className="rounded-2xl border border-white/15 bg-white/[0.04] p-5">
+                <p className="text-zinc-200">&quot;{item.quote}&quot;</p>
+                <p className="mt-4 text-sm font-semibold text-zinc-400">{item.by}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="content-wrap pb-12">
         <div className="grid gap-4 md:grid-cols-2 md:items-stretch">
           <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.35 }} className="h-full">
             <Link href="/blog" className="card-hover flex h-full min-h-[220px] items-start justify-between rounded-2xl border border-white/15 bg-black/80 p-6 md:p-7">
@@ -291,9 +353,14 @@ export default function Home() {
             <p className="mt-4 max-w-xl text-lg leading-relaxed text-zinc-100 md:text-xl">
               Share your brief and we will respond with a structured kickoff plan.
             </p>
-            <a href="mailto:hello@0x1labs.com" className="btn-primary mt-7">
-              hello@0x1labs.com
-            </a>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/contact" className="btn-primary">
+                Open Contact Form
+              </Link>
+              <a href="https://calendly.com" className="btn-secondary">
+                Book Discovery Call
+              </a>
+            </div>
           </div>
           <div className="mascot-glow rounded-2xl border border-white/20 bg-white/[0.06] p-5">
             <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut' }}>
@@ -302,6 +369,25 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
+
+      <section className="content-wrap py-10">
+        <div className="rounded-[24px] border border-white/15 bg-white/[0.04] p-6 md:p-8">
+          <h2 className="text-white">Frequently asked founder questions</h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            {homepageFaq.map((item) => (
+              <article key={item.q} className="rounded-xl border border-white/15 bg-black/30 p-4">
+                <h3 className="text-lg text-white">{item.q}</h3>
+                <p className="mt-2 text-sm text-zinc-300">{item.a}</p>
+              </article>
+            ))}
+          </div>
+          <Link href="/faq" className="mt-6 inline-flex text-sm font-semibold text-zinc-100 underline underline-offset-4">
+            Read full FAQ
+          </Link>
+        </div>
+      </section>
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
 
       <Footer />
     </main>

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { getAllOpeningSlugs, getOpeningBySlug } from '@/lib/careers'
+import { breadcrumbJsonLd, siteUrl } from '@/lib/seo'
 
 type PageProps = {
   params: {
@@ -39,12 +40,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${opening.title} | 0x1 Labs Careers`,
+    title: `${opening.title} - Careers`,
     description: opening.shortDescription,
+    alternates: {
+      canonical: `/careers/${opening.slug}`,
+    },
     openGraph: {
       title: `${opening.title} | 0x1 Labs`,
       description: opening.shortDescription,
       type: 'article',
+      url: `${siteUrl}/careers/${opening.slug}`,
     },
   }
 }
@@ -65,7 +70,7 @@ export default async function CareerRolePage({ params }: PageProps) {
     hiringOrganization: {
       '@type': 'Organization',
       name: '0x1 Labs',
-      sameAs: 'https://0x1labs.com',
+      sameAs: siteUrl,
     },
     jobLocation: {
       '@type': 'Place',
@@ -75,6 +80,12 @@ export default async function CareerRolePage({ params }: PageProps) {
       },
     },
   }
+
+  const breadcrumb = breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Careers', path: '/careers' },
+    { name: opening.title, path: `/careers/${opening.slug}` },
+  ])
 
   return (
     <main className="min-h-screen bg-[#090909] text-zinc-100">
@@ -134,6 +145,7 @@ export default async function CareerRolePage({ params }: PageProps) {
       </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
 
       <Footer />
     </main>

@@ -3,11 +3,12 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 
 const links = [
-  { label: 'Services', href: '#services' },
-  { label: 'Work', href: '#work' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Work', href: '/work' },
   { label: 'Blog', href: '/blog' },
   { label: 'Careers', href: '/careers' },
 ]
@@ -15,70 +16,19 @@ const links = [
 const Navbar = () => {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState<string>('')
-
-  const normalized = useMemo(
-    () =>
-      links.map((item) => {
-        if (!item.href.startsWith('#')) return item
-        return { ...item, href: pathname === '/' ? item.href : `/${item.href}` }
-      }),
-    [pathname],
-  )
-
-  useEffect(() => {
-    if (pathname !== '/') {
-      setActiveSection('')
-      return
-    }
-
-    const sections = ['services', 'work']
-      .map((id) => document.getElementById(id))
-      .filter((section): section is HTMLElement => Boolean(section))
-
-    if (!sections.length) return
-
-    const updateActiveSection = () => {
-      const hash = window.location.hash.replace('#', '')
-      if (hash === 'services' || hash === 'work') {
-        setActiveSection(hash)
-        return
-      }
-
-      const trigger = Math.min(260, Math.max(140, window.innerHeight * 0.32))
-      let current = ''
-
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect()
-        if (rect.top <= trigger) {
-          current = section.id
-        }
-      })
-
-      setActiveSection(current)
-    }
-
-    updateActiveSection()
-    window.addEventListener('scroll', updateActiveSection, { passive: true })
-    window.addEventListener('resize', updateActiveSection)
-    window.addEventListener('hashchange', updateActiveSection)
-
-    return () => {
-      window.removeEventListener('scroll', updateActiveSection)
-      window.removeEventListener('resize', updateActiveSection)
-      window.removeEventListener('hashchange', updateActiveSection)
-    }
-  }, [pathname])
 
   const isActive = (href: string) => {
-    if (href.startsWith('#')) {
-      return pathname === '/' && activeSection === href.slice(1)
-    }
     if (href === '/blog') {
       return pathname === '/blog' || pathname.startsWith('/blog/')
     }
     if (href === '/careers') {
       return pathname === '/careers' || pathname.startsWith('/careers/')
+    }
+    if (href === '/services') {
+      return pathname === '/services' || pathname.startsWith('/services/')
+    }
+    if (href === '/work') {
+      return pathname === '/work' || pathname.startsWith('/work/')
     }
     return pathname === href
   }
@@ -91,7 +41,7 @@ const Navbar = () => {
         </Link>
 
         <ul className="hidden items-center gap-6 md:flex">
-          {normalized.map((item) => (
+          {links.map((item) => (
             <li key={item.label}>
               <Link
                 href={item.href}
@@ -110,7 +60,7 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <Link href={pathname === '/' ? '#contact' : '/#contact'} className="btn-primary hidden md:inline-flex">
+        <Link href="/contact" className="btn-primary hidden md:inline-flex">
           Start a Project
         </Link>
 
@@ -127,7 +77,7 @@ const Navbar = () => {
       {open && (
         <div className="content-wrap mt-2 rounded-2xl border border-white/20 bg-[#111111]/95 p-4 shadow-[0_16px_48px_rgba(0,0,0,0.55)] backdrop-blur-xl md:hidden">
           <ul className="space-y-3">
-            {normalized.map((item) => (
+            {links.map((item) => (
               <li key={item.label}>
                 <Link
                   href={item.href}
@@ -141,7 +91,7 @@ const Navbar = () => {
               </li>
             ))}
             <li>
-              <Link href={pathname === '/' ? '#contact' : '/#contact'} className="btn-primary mt-2 w-full" onClick={() => setOpen(false)}>
+              <Link href="/contact" className="btn-primary mt-2 w-full" onClick={() => setOpen(false)}>
                 Start a Project
               </Link>
             </li>
