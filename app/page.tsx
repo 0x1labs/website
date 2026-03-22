@@ -357,7 +357,7 @@ export default function Home() {
               <Link href="/contact" className="btn-primary">
                 Open Contact Form
               </Link>
-              <a href="https://calendly.com" className="btn-secondary">
+              <a href="https://calendly.com/0x1labs0x1/30min" className="btn-secondary">
                 Book Discovery Call
               </a>
             </div>
