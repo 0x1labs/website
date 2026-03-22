@@ -23,7 +23,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: '0x1 Labs - Product Studio for Founders | MVP Development and Strategy',
+    default: '0x1 Labs | Product Studio for Founders and MVP Builds',
     template: '%s | 0x1 Labs',
   },
   description:

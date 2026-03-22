@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import ProjectInquiryForm from '@/components/ProjectInquiryForm'
 import { breadcrumbJsonLd, siteUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
@@ -34,7 +35,7 @@ export default function ContactPage() {
             email hello@0x1labs.com.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <a href="https://calendly.com" className="btn-primary">Book a free discovery call</a>
+            <a href="https://calendly.com/0x1labs0x1/30min" className="btn-primary">Book a free discovery call</a>
             <a href="mailto:hello@0x1labs.com" className="btn-secondary">Email the team</a>
           </div>
         </div>
@@ -42,28 +43,7 @@ export default function ContactPage() {
 
       <section className="content-wrap py-10 md:py-14">
         <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-          <form
-            className="rounded-2xl border border-white/15 bg-white/[0.04] p-6 md:p-8"
-            action="mailto:hello@0x1labs.com"
-            method="post"
-            encType="text/plain"
-          >
-            <h2 className="text-white">Start a project</h2>
-            <p className="mt-2 text-sm text-zinc-400">Share your idea and we will follow up with next steps.</p>
-            <div className="mt-5 grid gap-4 md:grid-cols-2">
-              <input name="name" placeholder="Your name" required className="rounded-xl border border-white/20 bg-black/40 px-4 py-3 text-zinc-100" />
-              <input name="email" type="email" placeholder="Work email" required className="rounded-xl border border-white/20 bg-black/40 px-4 py-3 text-zinc-100" />
-              <input name="phone" type="tel" placeholder="Phone number (optional)" className="rounded-xl border border-white/20 bg-black/40 px-4 py-3 text-zinc-100 md:col-span-2" />
-            </div>
-            <textarea
-              name="idea"
-              rows={6}
-              placeholder="Tell us your idea"
-              className="mt-4 w-full rounded-xl border border-white/20 bg-black/40 px-4 py-3 text-zinc-100"
-              required
-            />
-            <button type="submit" className="btn-primary mt-5">Send project inquiry</button>
-          </form>
+          <ProjectInquiryForm />
 
           <aside className="space-y-4">
             <div className="rounded-2xl border border-white/15 bg-white/[0.04] p-6">
