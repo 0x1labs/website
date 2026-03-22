@@ -5,10 +5,19 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import blogMascot from '@/assets/photo/mascot/blog.png'
 import { getAllPostsMeta } from '@/lib/blog'
+import { breadcrumbJsonLd, siteUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Blog | 0x1 Labs',
-  description: 'Product, engineering, and delivery insights from 0x1 Labs.',
+  title: 'Blog - Product Strategy and Engineering Insights',
+  description:
+    'Practical insights on product strategy, engineering decisions, and startup execution from the 0x1 Labs team.',
+  alternates: { canonical: '/blog' },
+  openGraph: {
+    title: '0x1 Labs Blog',
+    description:
+      'Product strategy, MVP delivery, and software execution insights for startup founders and product teams.',
+    url: `${siteUrl}/blog`,
+  },
 }
 
 function formatDate(isoDate: string): string {
@@ -22,6 +31,10 @@ function formatDate(isoDate: string): string {
 
 export default async function BlogPage() {
   const posts = await getAllPostsMeta()
+  const breadcrumb = breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Blog', path: '/blog' },
+  ])
 
   return (
     <main className="min-h-screen bg-[#090909] text-zinc-100">
@@ -75,6 +88,7 @@ export default async function BlogPage() {
       </section>
 
       <Footer />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
     </main>
   )
 }

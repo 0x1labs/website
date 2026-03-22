@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { JetBrains_Mono, Manrope, Space_Grotesk } from 'next/font/google'
 import './globals.css'
+import { siteUrl } from '@/lib/seo'
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -21,18 +22,53 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: '0x1 Labs - From Zero to One',
+  title: {
+    default: '0x1 Labs - Product Studio for Founders | MVP Development and Strategy',
+    template: '%s | 0x1 Labs',
+  },
   description:
-    '0x1 Labs is a product studio for founders and teams who want to ship clear, fast, and meaningful digital products.',
-  metadataBase: new URL('https://0x1labs.com'),
-  keywords:
-    'product studio, mvp development, startup engineering, software design, rapid prototyping, web3 product team',
+    '0x1 Labs helps founders ship meaningful digital products in 4-10 weeks through product strategy, rapid prototyping, and full-stack MVP development.',
+  metadataBase: new URL(siteUrl),
+  keywords: [
+    'product studio',
+    'MVP development company',
+    'startup product development',
+    'product development agency',
+    'rapid prototyping services',
+    'full-stack product development',
+    'SaaS MVP development',
+    'product studio Nepal',
+    'MVP development Kathmandu',
+    'software development company Nepal',
+  ],
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
   openGraph: {
-    title: '0x1 Labs - From Zero to One',
+    title: '0x1 Labs - Product Studio for Founders',
     description:
-      'We build product experiences with speed, clarity, and senior-level execution.',
+      'Strategy, design, and engineering under one roof. We help startups launch and scale reliable products with senior execution.',
     type: 'website',
-    url: 'https://0x1labs.com',
+    url: siteUrl,
+    siteName: '0x1 Labs',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '0x1 Labs - Product Studio for Founders',
+    description:
+      'Ship meaningful products in 4-10 weeks with strategy, design, and full-stack engineering from 0x1 Labs.',
   },
   icons: {
     icon: [
