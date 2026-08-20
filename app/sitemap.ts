@@ -1,44 +1,34 @@
 import type { MetadataRoute } from 'next'
-import { getAllPostSlugs } from '@/lib/blog'
 import { getAllOpeningSlugs } from '@/lib/careers'
+import { orderedProducts } from '@/lib/products'
 import { siteUrl } from '@/lib/seo'
 
 const staticRoutes = [
   '/',
   '/about',
-  '/services',
-  '/services/product-strategy',
-  '/services/rapid-prototyping',
-  '/services/mvp-development',
-  '/services/growth-partnership',
-  '/work',
-  '/work/diff-checker',
-  '/work/project-nexus',
-  '/work/myride',
-  '/blog',
+  '/products',
   '/careers',
   '/contact',
-  '/faq',
   '/privacy',
   '/terms',
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [postSlugs, careerSlugs] = await Promise.all([getAllPostSlugs(), getAllOpeningSlugs()])
+  const careerSlugs = await getAllOpeningSlugs()
   const now = new Date()
 
   const staticEntries = staticRoutes.map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: now,
     changeFrequency: route === '/' ? ('weekly' as const) : ('monthly' as const),
-    priority: route === '/' ? 1 : route.startsWith('/services/') ? 0.8 : 0.7,
+    priority: route === '/' ? 1 : route === '/products' ? 0.9 : 0.7,
   }))
 
-  const blogEntries = postSlugs.map((slug) => ({
-    url: `${siteUrl}/blog/${slug}`,
-    lastModified: now,
+  const productEntries = orderedProducts.map((product) => ({
+    url: `${siteUrl}/products/${product.slug}`,
+    lastModified: new Date(product.lastVerified),
     changeFrequency: 'monthly' as const,
-    priority: 0.7,
+    priority: 0.8,
   }))
 
   const careerEntries = careerSlugs.map((slug) => ({
@@ -48,5 +38,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
-  return [...staticEntries, ...blogEntries, ...careerEntries]
+  return [...staticEntries, ...productEntries, ...careerEntries]
 }

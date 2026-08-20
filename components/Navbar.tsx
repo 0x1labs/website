@@ -1,105 +1,123 @@
 'use client'
 
 import Link from 'next/link'
+import { X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-const links = [
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Work', href: '/work' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Careers', href: '/careers' },
+const destinations = [
+  { label: 'Work', href: '/products', note: 'Everything public' },
+  { label: 'Company', href: '/about', note: 'Why we build' },
+  { label: 'Careers', href: '/careers', note: 'Make with us' },
+  { label: 'Contact', href: '/contact', note: 'Start a conversation' },
 ]
 
-const Navbar = () => {
+export default function Navbar() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const firstLinkRef = useRef<HTMLAnchorElement>(null)
 
-  const isActive = (href: string) => {
-    if (href === '/blog') {
-      return pathname === '/blog' || pathname.startsWith('/blog/')
+  useEffect(() => {
+    const updateScrolled = () => setScrolled(window.scrollY > 8)
+    updateScrolled()
+    window.addEventListener('scroll', updateScrolled, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', updateScrolled)
     }
-    if (href === '/careers') {
-      return pathname === '/careers' || pathname.startsWith('/careers/')
+  }, [pathname])
+
+  useEffect(() => {
+    if (!open) return
+    const trigger = triggerRef.current
+    const frame = window.requestAnimationFrame(() => firstLinkRef.current?.focus())
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+      if (event.key !== 'Tab') return
+      const focusable = overlayRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
+      if (!focusable?.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
     }
-    if (href === '/services') {
-      return pathname === '/services' || pathname.startsWith('/services/')
+
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = ''
+      trigger?.focus()
     }
-    if (href === '/work') {
-      return pathname === '/work' || pathname.startsWith('/work/')
-    }
-    return pathname === href
-  }
+  }, [open])
 
   return (
-    <header className="fixed inset-x-0 top-4 z-50 px-4">
-      <nav className="content-wrap flex items-center justify-between rounded-2xl border border-white/20 bg-[#111111]/92 px-4 py-3.5 shadow-[0_16px_48px_rgba(0,0,0,0.55)] backdrop-blur-xl">
-        <Link href="/" className="font-heading text-lg font-bold tracking-tight text-white">
-          0x1 Labs
+    <>
+      <nav className="sc-nav" data-scrolled={scrolled ? 'true' : 'false'} aria-label="Primary navigation">
+        <Link href="/" className="sc-brand" aria-label="Zero One Labs home">
+          <span className="sc-brand__name">ZERO ONE LABS</span>
         </Link>
-
-        <ul className="hidden items-center gap-6 md:flex">
-          {links.map((item) => (
-            <li key={item.label}>
-              <Link
-                href={item.href}
-                className={`px-0 py-1 text-sm font-semibold tracking-[0.01em] transition-colors duration-200 ${
-                  isActive(item.href)
-                    ? 'text-white'
-                    : 'text-zinc-100 hover:text-white'
-                }`}
-              >
-                <span className="relative">
-                  {item.label}
-                  {isActive(item.href) && <span className="absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-white/90" aria-hidden="true" />}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <Link href="/contact" className="btn-primary hidden md:inline-flex">
-          Start a Project
-        </Link>
-
         <button
+          ref={triggerRef}
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-zinc-100 md:hidden"
-          onClick={() => setOpen((value) => !value)}
-          aria-label="Toggle navigation"
+          className="sc-index-trigger"
+          aria-expanded={open}
+          aria-controls="site-index"
+          aria-label="Open site index"
+          onClick={() => setOpen(true)}
         >
-          {open ? <X size={18} /> : <Menu size={18} />}
+          <span>Index</span>
+          <i aria-hidden="true">+</i>
         </button>
       </nav>
 
-      {open && (
-        <div className="content-wrap mt-2 rounded-2xl border border-white/20 bg-[#111111]/95 p-4 shadow-[0_16px_48px_rgba(0,0,0,0.55)] backdrop-blur-xl md:hidden">
-          <ul className="space-y-3">
-            {links.map((item) => (
-              <li key={item.label}>
-                <Link
-                  href={item.href}
-                  className={`block rounded-lg px-2 py-2 text-sm font-medium transition-colors duration-200 ${
-                    isActive(item.href) ? 'text-white underline underline-offset-4' : 'text-zinc-200 hover:bg-white/10'
-                  }`}
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <Link href="/contact" className="btn-primary mt-2 w-full" onClick={() => setOpen(false)}>
-                Start a Project
-              </Link>
-            </li>
-          </ul>
+      <div
+        ref={overlayRef}
+        id="site-index"
+        className="sc-index"
+        data-open={open ? 'true' : 'false'}
+        aria-hidden={!open}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site index"
+      >
+        <div className="sc-index__head">
+          <span>Zero One Labs</span>
+          <button type="button" onClick={() => setOpen(false)} aria-label="Close site index" tabIndex={open ? 0 : -1}>
+            <X size={28} aria-hidden="true" />
+          </button>
         </div>
-      )}
-    </header>
+
+        <nav aria-label="Site index links">
+          {destinations.map((destination, index) => {
+            const active = pathname === destination.href || (destination.href === '/products' && pathname.startsWith('/products'))
+            return (
+              <Link
+                key={destination.href}
+                ref={index === 0 ? firstLinkRef : undefined}
+                href={destination.href}
+                data-active={active ? 'true' : 'false'}
+                onClick={() => setOpen(false)}
+                tabIndex={open ? 0 : -1}
+              >
+                <strong>{destination.label}</strong>
+                <span>{destination.note}</span>
+              </Link>
+            )
+          })}
+        </nav>
+
+        <p className="sc-index__legal">Zero One Labs Pvt. Ltd.</p>
+      </div>
+    </>
   )
 }
-
-export default Navbar

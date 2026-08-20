@@ -10,8 +10,6 @@ const projects = [
     title: 'Diff Checker',
     category: 'Text Comparison Tool',
     description: 'Advanced text comparison tool that instantly highlights differences between documents. Perfect for developers, writers, and content creators who need precise change detection.',
-    status: 'On the Market',
-    statusColor: 'bg-green-500',
     metrics: ['Real-time Diff', 'Side-by-side View', 'Export Options'],
     color: 'from-emerald-500 to-teal-500',
     year: '2024',
@@ -24,8 +22,6 @@ const projects = [
     title: 'Project Nexus',
     category: 'Blockchain Platform',
     description: 'Next-generation blockchain infrastructure powering decentralized applications. Built for scalability, security, and seamless developer experience in the Web3 ecosystem.',
-    status: 'Coming Soon',
-    statusColor: 'bg-orange-500',
     metrics: ['Web3 Native', 'Zero Gas Fees', 'Cross-chain'],
     color: 'from-violet-500 to-purple-700',
     year: '2025',
@@ -37,8 +33,6 @@ const projects = [
     title: 'MyRide',
     category: 'Mobility Platform',
     description: 'A vehicle companion app built for riders who take pride in their machines. It offers a seamless way to track service history, receive maintenance reminders, schedule appointments, and access complete information about their vehicles.',
-    status: 'On the Labs',
-    statusColor: 'bg-blue-500',
     metrics: ['iOS|Android', 'Web App'],
     color: 'from-blue-500 to-cyan-500',
     year: '2023',
@@ -101,7 +95,7 @@ const Products = () => {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Ideas We've Brought
+            Ideas We&apos;ve Brought
             <br />
             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               to Life
@@ -114,7 +108,7 @@ const Products = () => {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            We don't just build for others — we also build for ourselves. Here are some of the products we've taken from 0 to 1.
+            We don&apos;t just build for others — we also build for ourselves. Here are some of the products we&apos;ve taken from 0 to 1.
           </motion.p>
         </motion.div>
         
@@ -154,17 +148,6 @@ const Products = () => {
                     </motion.div>
                     <div className="text-right">
                       <div className="text-sm text-neutral-500 uppercase tracking-widest mb-1">{project.year}</div>
-                      <motion.div 
-                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold text-white ${project.statusColor}`}
-                        whileHover={{ scale: 1.05 }}
-                        animate={activeProject === index ? { 
-                          boxShadow: ["0 0 0 0 rgba(0,0,0,0.1)", "0 0 0 20px rgba(0,0,0,0)", "0 0 0 0 rgba(0,0,0,0)"]
-                        } : {}}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      >
-                        <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                        {project.status}
-                      </motion.div>
                     </div>
                   </div>
 
@@ -459,7 +442,7 @@ const Products = () => {
             whileHover={{ scale: 1.05, y: -5 }}
             whileTap={{ scale: 0.95 }}
           >
-            Let's Build Together
+            Let&apos;s Build Together
           </motion.a>
         </motion.div>
       </div>

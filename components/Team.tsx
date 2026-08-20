@@ -187,7 +187,7 @@ const Team = () => {
                       } : {}}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
-                      "
+                      &quot;
                     </motion.div>
                     
                     {/* Quote Text */}

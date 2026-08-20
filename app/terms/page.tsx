@@ -5,7 +5,7 @@ import { breadcrumbJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Terms and Conditions',
-  description: 'Terms and conditions for using 0x1 Labs website and services.',
+  description: 'Terms and conditions for using the Zero One Labs company website.',
   alternates: { canonical: '/terms' },
 }
 
@@ -16,21 +16,24 @@ const breadcrumb = breadcrumbJsonLd([
 
 export default function TermsPage() {
   return (
-    <main className="min-h-screen bg-[#090909] text-zinc-100">
+    <main id="main-content" className="si-page si-legal">
       <Navbar />
-      <section className="content-wrap pt-28 md:pt-32 pb-12">
-        <article className="rounded-[28px] border border-white/15 bg-black/80 p-6 md:p-10">
-          <h1 className="text-white">Terms and Conditions</h1>
-          <p className="mt-4 text-zinc-300">Effective date: March 22, 2026</p>
-          <p className="mt-4 text-zinc-200">
-            Content on this website is for informational purposes. Engagement terms for product services are
-            defined in signed project agreements.
+      <header className="si-legal-hero">
+        <h1>Terms and Conditions</h1>
+        <p>Effective March 22, 2026</p>
+      </header>
+      <section className="si-legal-body">
+        <h2>Simple terms, clearly stated.</h2>
+        <div>
+          <p>
+            Content on this company website is provided for general information about Zero One Labs and the
+            products we build. Individual products may provide their own terms on their independent sites.
           </p>
-          <p className="mt-4 text-zinc-200">
-            By using this site, you agree not to misuse content, forms, or communication channels. For questions,
+          <p>
+            By using this site, you agree not to misuse its content or communication channels. For questions,
             contact hello@0x1labs.com.
           </p>
-        </article>
+        </div>
       </section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <Footer />

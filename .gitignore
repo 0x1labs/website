@@ -40,3 +40,6 @@ opencode.json
 
 # Mac-specific
 *.DS_Store
+
+# Design tooling working files
+.impeccable/

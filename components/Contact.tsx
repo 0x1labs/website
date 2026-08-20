@@ -87,7 +87,7 @@ const Contact = () => {
             Have a Bold Idea?
           </h2>
           <p className="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto leading-relaxed">
-            Let's transform your vision into something real. We're fast, collaborative, and obsessed with quality.
+            Let&apos;s transform your vision into something real. We&apos;re fast, collaborative, and obsessed with quality.
           </p>
         </motion.div>
 

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { getAllOpeningSlugs, getOpeningBySlug } from '@/lib/careers'
@@ -36,7 +37,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const opening = await getOpeningBySlug(params.slug)
   if (!opening) {
-    return { title: 'Role Not Found | 0x1 Labs Careers' }
+    return { title: 'Role Not Found | Zero One Labs Careers' }
   }
 
   return {
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: `/careers/${opening.slug}`,
     },
     openGraph: {
-      title: `${opening.title} | 0x1 Labs`,
+      title: `${opening.title} | Zero One Labs`,
       description: opening.shortDescription,
       type: 'article',
       url: `${siteUrl}/careers/${opening.slug}`,
@@ -69,7 +70,7 @@ export default async function CareerRolePage({ params }: PageProps) {
     validThrough: opening.closingAt,
     hiringOrganization: {
       '@type': 'Organization',
-      name: '0x1 Labs',
+      name: 'Zero One Labs Pvt. Ltd.',
       sameAs: siteUrl,
     },
     jobLocation: {
@@ -88,59 +89,58 @@ export default async function CareerRolePage({ params }: PageProps) {
   ])
 
   return (
-    <main className="min-h-screen bg-[#090909] text-zinc-100">
+    <main id="main-content" className="si-page si-role">
       <Navbar />
 
-      <section className="content-wrap pt-28 md:pt-32">
-        <div className="rounded-[28px] border border-white/15 bg-black/80 p-6 md:p-10">
-          <Link href="/careers" className="text-sm font-semibold text-zinc-300 underline underline-offset-4">
-            Back to careers
+      <header className="si-role-hero">
+        <div className="si-role-hero__title">
+          <Link href="/careers" className="si-back-link">
+            <ArrowLeft size={18} aria-hidden="true" /> Back to careers
           </Link>
-
-          <h1 className="mt-5 max-w-4xl text-white">{opening.title}</h1>
-          <p className="mt-3 text-base text-zinc-300">
-            {opening.team} · {opening.employmentType} · {opening.location} · Posted {formatDate(opening.postedAt)}
-          </p>
-          <p className="mt-1 text-base text-zinc-300">Experience: {opening.experience}</p>
-          <p className="mt-5 max-w-4xl text-lg text-zinc-200">{opening.shortDescription}</p>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border border-white/15 bg-white/[0.04] p-5">
-              <h3 className="text-white">Responsibilities</h3>
-              <ul className="mt-3 list-disc space-y-2 pl-5 text-zinc-300">
-                {opening.responsibilities.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-white/15 bg-white/[0.04] p-5">
-              <h3 className="text-white">Requirements</h3>
-              <ul className="mt-3 list-disc space-y-2 pl-5 text-zinc-300">
-                {opening.requirements.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <h1>{opening.title}</h1>
+          <p>{opening.shortDescription}</p>
+          <a href="#apply" className="si-button">Apply now <ArrowUpRight size={18} aria-hidden="true" /></a>
         </div>
+        <dl className="si-role-facts">
+          <div><dt>Team</dt><dd>{opening.team}</dd></div>
+          <div><dt>Type</dt><dd>{opening.employmentType}</dd></div>
+          <div><dt>Location</dt><dd>{opening.location}</dd></div>
+          <div><dt>Experience</dt><dd>{opening.experience}</dd></div>
+          <div><dt>Posted</dt><dd>{formatDate(opening.postedAt)}</dd></div>
+        </dl>
+      </header>
+
+      <section className="si-role-details" aria-label="Role details">
+        <article>
+          <h2>What you&apos;ll own.</h2>
+          <ul>
+            {opening.responsibilities.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </article>
+        <article>
+          <h2>What you&apos;ll bring.</h2>
+          <ul>
+            {opening.requirements.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </article>
       </section>
 
-      <section className="content-wrap py-8 pb-10">
-        <div className="overflow-hidden rounded-[22px] border border-white/15 bg-black/80">
-          <div className="border-b border-white/10 px-5 py-4">
-            <h3 className="text-white">Apply for {opening.title}</h3>
-          </div>
-
-          <div className="relative h-[780px] w-full md:h-[840px]">
-            <iframe
-              src={safeTallyUrl(opening.tallyUrl)}
-              title={opening.title}
-              className="absolute inset-0 h-full w-full border-0"
-              loading="lazy"
-              allow="clipboard-write"
-            />
-          </div>
+      <section id="apply" className="si-role-apply" aria-labelledby="apply-heading">
+        <div className="si-role-apply__head">
+          <h2 id="apply-heading">Apply for {opening.title}.</h2>
+          <p>Your application stays inside the form below.</p>
+        </div>
+        <div className="si-role-apply__frame">
+          <iframe
+            src={safeTallyUrl(opening.tallyUrl)}
+            title={`Apply for ${opening.title}`}
+            loading="lazy"
+            allow="clipboard-write"
+          />
         </div>
       </section>
 
