@@ -189,15 +189,10 @@ function sampleStrokes(strokes: Pt[][], count: number): Pt[] {
 export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
   const reducedMotion = useReducedMotion()
   const [enabled, setEnabled] = useState(false)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  useEffect(() => {
-    const query = window.matchMedia('(min-width: 981px) and (hover: hover) and (pointer: fine)')
-    const update = () => setEnabled(query.matches)
-    update()
-    query.addEventListener('change', update)
-    return () => query.removeEventListener('change', update)
-  }, [])
+  // Client-only flag; the engine itself adapts its layout to any width.
+  useEffect(() => setEnabled(true), [])
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -226,6 +221,7 @@ export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
     let curl = new Float32Array(0)
     let loose = new Uint8Array(0)
     let count = 0
+    let ambientActive = AMBIENT_COUNT
     const originalText = word.textContent ?? 'to stay ideas.'
     let swapTimer = 0
 
@@ -237,6 +233,12 @@ export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
     let cameFromWord = true
     let holdShapeAt = 0
     let artBox = { x0: 0, x1: 0, y0: 0, y1: 0 }
+    let wordBox = { x0: 0, x1: 0, y0: 0, y1: 0 }
+    let playedAt = 0 // last moment the visitor stirred the settled art
+    let playEnergy = 0 // accumulated stirring; enough of it sends the dust home
+    let lastPlayX = -1
+    let lastPlayY = -1
+    const PLAY_TO_RETURN = 5200 // px of cursor travel through the art
 
     const ax = new Float32Array(AMBIENT_COUNT)
     const ay = new Float32Array(AMBIENT_COUNT)
@@ -307,6 +309,12 @@ export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
       const scale = rect.width / inkW
       const left = rect.left - sectionRect.left
       const centerY = rect.top - sectionRect.top + rect.height / 2
+      wordBox = {
+        x0: left - 20,
+        x1: left + rect.width + 20,
+        y0: centerY - rect.height / 2 - 20,
+        y1: centerY + rect.height / 2 + 20,
+      }
 
       const mainCount = main.raw.length
       const grew = Math.ceil(mainCount * EXTRA_RATIO) !== count
@@ -341,9 +349,12 @@ export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
         wordY[i] = centerY + (p[1] - main.minY - inkH / 2) * scale + (Math.random() - 0.5) * 1.6
       }
       // Blueprints get every grain — the alt line is solid type meanwhile
-      const s = Math.min(height * 0.66, width * 0.36)
-      const cx = width * 0.735
-      const cy = height * 0.47
+      // Compact layouts stack the stage under the copy; wide ones keep it right
+      const compact = width < 981
+      ambientActive = compact ? 320 : AMBIENT_COUNT
+      const s = compact ? Math.min(width * 0.78, height * 0.36) : Math.min(height * 0.66, width * 0.36)
+      const cx = compact ? width * 0.5 : width * 0.735
+      const cy = compact ? height * 0.7 : height * 0.47
       artBox = { x0: cx - s * 0.6, x1: cx + s * 0.6, y0: cy - s * 0.6, y1: cy + s * 0.6 }
       shapeX = []
       shapeY = []
@@ -364,23 +375,56 @@ export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
       const rect = section.getBoundingClientRect()
       pointer.x = event.clientX - rect.left
       pointer.y = event.clientY - rect.top
-      // Playing with a settled artwork sends the dust home to respell
-      // "to stay ideas." — the only way the word ever comes back.
+      // Stirring the settled art builds up play energy. A casual touch
+      // does nothing lasting — only a proper play session earns the
+      // flight home to respell "to stay ideas."
       if (
         phase === 'holdShape' &&
         performance.now() > holdShapeAt + 600 &&
         pointer.x > artBox.x0 && pointer.x < artBox.x1 &&
         pointer.y > artBox.y0 && pointer.y < artBox.y1
       ) {
-        phase = 'toWord'
-        phaseUntil = performance.now() + FLIGHT_MS
-        launch(performance.now())
-        hideSolidAlt()
+        playedAt = performance.now()
+        if (lastPlayX >= 0) {
+          // Cap per event so a single fast fling can't cash out the whole bar
+          playEnergy += Math.min(40, Math.hypot(pointer.x - lastPlayX, pointer.y - lastPlayY))
+        }
+        lastPlayX = pointer.x
+        lastPlayY = pointer.y
+        if (playEnergy > PLAY_TO_RETURN) {
+          playEnergy = 0
+          lastPlayX = -1
+          phase = 'toWord'
+          phaseUntil = performance.now() + FLIGHT_MS
+          launch(performance.now())
+          hideSolidAlt()
+        }
+      } else {
+        lastPlayX = -1
+        lastPlayY = -1
       }
     }
     const onPointerLeave = () => {
       pointer.x = -9999
       pointer.y = -9999
+    }
+
+    // Tapping the dust words sends them off to build the art right away
+    const onPointerDown = (event: PointerEvent) => {
+      const rect = section.getBoundingClientRect()
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+      if (
+        phase === 'holdWord' &&
+        x > wordBox.x0 && x < wordBox.x1 &&
+        y > wordBox.y0 && y < wordBox.y1
+      ) {
+        phase = 'toShape'
+        phaseUntil = performance.now() + FLIGHT_MS
+        cameFromWord = true
+        launch(performance.now())
+        showSolidAlt()
+      }
     }
 
     const launch = (now: number) => {
@@ -438,9 +482,13 @@ export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
           phase = 'holdShape'
           holdShapeAt = now
           phaseUntil = now + SHAPE_HOLD_MS
+          playEnergy = 0
+        } else if (now - playedAt < 1500) {
+          // Mid-play: hold this artwork steady instead of morphing away
+          phaseUntil = now + 800
         } else {
           // The art never leaves on its own — it morphs into another
-          // random artwork. Only the visitor's touch sends it home.
+          // random artwork. Only a good play session sends it home.
           phase = 'toShape'
           phaseUntil = now + FLIGHT_MS
           cameFromWord = false
@@ -468,7 +516,7 @@ export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
           asize[i] = 0.8 + adepth[i] * 1.9
         }
       }
-      for (let i = 0; i < AMBIENT_COUNT; i++) {
+      for (let i = 0; i < ambientActive; i++) {
         const depth = adepth[i]
         const angle =
           Math.sin(ax[i] * 0.0022 + now * 0.00016 + aseed[i] * 0.35) * 1.6 +
@@ -586,6 +634,7 @@ export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
     intersection.observe(section)
     section.addEventListener('pointermove', onPointerMove, { passive: true })
     section.addEventListener('pointerleave', onPointerLeave, { passive: true })
+    section.addEventListener('pointerdown', onPointerDown, { passive: true })
     void setup()
 
     return () => {
@@ -598,6 +647,7 @@ export default function UnbuiltWord({ onLoad }: { onLoad: () => void }) {
       intersection.disconnect()
       section.removeEventListener('pointermove', onPointerMove)
       section.removeEventListener('pointerleave', onPointerLeave)
+      section.removeEventListener('pointerdown', onPointerDown)
     }
   }, [reducedMotion, enabled, onLoad])
 

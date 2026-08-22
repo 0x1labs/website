@@ -1314,6 +1314,10 @@ body {
 .sc-opening--empty { grid-template-columns: 1fr 1fr auto !important; }
 
 @media (max-width: 980px) {
+  /* Below 981px the dust stage moves under the copy, so pin copy to the top */
+  .sc-hero { height: max(100svh, 700px); }
+  .sc-hero__paper { align-items: start; }
+  .sc-hero__copy { width: 100%; max-width: none; padding-top: 6.5rem; }
   .sc-hero h1 { font-size: clamp(3.6rem, 7.8vw, 5rem); }
   .sc-product { grid-template-columns: minmax(330px,.9fr) minmax(420px,1.1fr); }
   .sc-product-artifact--run-proof { width: 50vw; }
@@ -1336,16 +1340,18 @@ body {
   .sc-index nav strong { font-size: clamp(3.5rem, 19vw, 6rem); }
   .sc-index nav span { display: none; }
 
-  .sc-hero { height: max(88svh, 640px); }
+  /* Full height on phones: the copy sits on top and the dust artworks
+     form in the open space below it. */
+  .sc-hero { height: max(100svh, 700px); }
   .sc-hero__paper { align-items: start; }
   .sc-hero__copy { width: 100%; padding: 5.5rem 1rem 2.5rem; }
-  .sc-hero h1 { font-size: clamp(3.35rem, 15vw, 5.25rem); line-height: .83; }
+  .sc-hero h1 { font-size: clamp(2.7rem, 11.4vw, 5rem); line-height: .87; }
   .sc-hero__copy p { max-width: 340px; margin-top: 1.25rem; font-size: .96rem; }
   .sc-enter-link { margin-top: 1.25rem; }
   .sc-origin { grid-template-columns: 1fr; min-height: auto; gap: 3rem; padding: 5rem 1rem; }
   .sc-origin h2 { font-size: clamp(2.8rem, 11.8vw, 4.65rem); line-height: .9; }
   .sc-origin__copy p { max-width: 40ch; margin: 1.75rem 0 0; font-size: 1rem; }
-  .sc-origin__field .sc-colour-reveal { aspect-ratio: 4 / 3; max-height: 52svh; }
+  .sc-origin__field .sc-colour-reveal { aspect-ratio: 4 / 5; max-height: 62svh; }
   .sc-origin__field figcaption { font-size: .82rem; }
 
   .sc-runway { height: auto; }
