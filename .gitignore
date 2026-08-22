@@ -43,3 +43,6 @@ opencode.json
 
 # Design tooling working files
 .impeccable/
+
+.codex/
+tsconfig.tsbuildinfo

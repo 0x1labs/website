@@ -1,0 +1,6 @@
+# Netlify redirects (force with ! so they win even where exported files exist,
+# matching the old next.config.js behavior)
+/work/*     /products  301!
+/services/* /about     301!
+/blog/*     /about     301!
+/faq        /about     301!

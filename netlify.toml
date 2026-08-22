@@ -1,0 +1,5 @@
+# For repo-connected Netlify deploys. Drag-and-drop deploys of the out/
+# folder work without this file.
+[build]
+  command = "npm run build"
+  publish = "out"

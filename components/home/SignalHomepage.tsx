@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar'
 import BinaryHero from '@/components/home/BinaryHero'
 import ColourReveal from '@/components/home/ColourReveal'
 import ProductRunway from '@/components/home/ProductRunway'
+import DecodeText from '@/components/home/DecodeText'
 import type { Product } from '@/lib/products'
 
 export default function SignalHomepage({ products }: { products: Product[] }) {
@@ -14,34 +15,30 @@ export default function SignalHomepage({ products }: { products: Product[] }) {
       <BinaryHero />
 
       <section id="origin" className="sc-origin" aria-labelledby="origin-heading">
+        <div className="sc-origin__copy">
+          <h2 id="origin-heading">We chase what keeps coming back.</h2>
+          <p>
+            Zero One Labs is three friends with one shared habit: when something keeps returning
+            to mind, we build it — small, useful software, made with care.
+          </p>
+        </div>
         <figure className="sc-origin__field">
           <ColourReveal
             src="/images/field/pause-large.webp"
             alt="Trail shoes resting on snow, with a mountain valley beyond"
-            sizes="100vw"
+            sizes="(max-width: 760px) 100vw, 44vw"
           />
           <figcaption>Sometimes the first step is noticing what keeps returning.</figcaption>
         </figure>
-        <div className="sc-origin__shutters" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="sc-origin__copy">
-          <h2 id="origin-heading">
-            <span>Useful products often begin</span>
-            <span className="sc-origin__outline">with something small</span>
-            <span>that refuses to leave your mind.</span>
-          </h2>
-          <p>Three friends kept following that feeling until it became things people could actually use.</p>
-        </div>
       </section>
 
       <ProductRunway products={products} />
 
       <section id="unreleased" className="sc-unreleased" aria-labelledby="unreleased-heading">
         <div className="sc-unreleased__copy">
-          <h2 id="unreleased-heading">Next is already taking shape.</h2>
+          <h2 id="unreleased-heading">
+            <DecodeText text="Next is already taking shape." />
+          </h2>
           <p>Some work is nearly ready. Some still has no name. We&apos;ll show it when it earns its place.</p>
           <Link href="/products" className="sc-action sc-action--primary">
             Full product index

@@ -25,7 +25,7 @@ export default function Footer() {
           <Link href="/terms">Terms</Link>
         </nav>
 
-        <p>© 2026 Zero One Labs Pvt. Ltd. · 0x1labs.com</p>
+        <p>© 2026 Zero One Labs Pvt. Ltd. · Kathmandu, Nepal · 0x1labs.com</p>
       </div>
     </footer>
   )

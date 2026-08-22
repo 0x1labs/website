@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Static export: `npm run build` emits a self-contained site in out/,
+  // ready for any static host (Netlify drag-and-drop included).
+  output: 'export',
   experimental: {
     optimizeCss: true,
   },
@@ -7,19 +10,11 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   images: {
-    formats: ['image/webp', 'image/avif'],
+    // next/image optimization needs a server; static export serves originals.
+    unoptimized: true,
   },
-  async redirects() {
-    return [
-      { source: '/work/:path*', destination: '/products', permanent: true },
-      { source: '/services/:path*', destination: '/about', permanent: true },
-      { source: '/blog/:path*', destination: '/about', permanent: true },
-      { source: '/faq', destination: '/about', permanent: true },
-    ]
-  },
-  // Enable static export if needed
-  // output: 'export',
-  // trailingSlash: true,
+  // Redirects live in public/_redirects (Netlify format) — next.config
+  // redirects() are not supported with output: 'export'.
 }
 
 module.exports = nextConfig
