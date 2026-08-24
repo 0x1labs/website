@@ -1849,7 +1849,7 @@ body {
 .si-about-hero h1 { max-width: 10ch; font-size: clamp(4rem, 8.2vw, 8rem); line-height: .84; }
 .si-about-hero__copy p { max-width: 46ch; margin-top: 2.5rem; font-size: clamp(1.1rem, 1.6vw, 1.4rem); line-height: 1.65; }
 .si-about-hero__image { position: relative; min-height: 680px; margin: 0; overflow: hidden; clip-path: polygon(14% 0,100% 0,100% 100%,0 100%); }
-.si-about-hero__image img { object-fit: cover; object-position: center 64%; filter: grayscale(1) contrast(1.06); }
+.si-about-hero__image img { object-fit: cover; object-position: center 64%; filter: saturate(1.06) contrast(1.04); }
 .si-about-hero__image::after { position: absolute; inset: 0; content: ''; background: linear-gradient(180deg, transparent 58%, rgba(0,0,0,.78)); }
 .si-about-hero__image figcaption { position: absolute; z-index: 1; right: 2rem; bottom: 2rem; left: 14%; max-width: 34ch; font-size: .9rem; line-height: 1.5; }
 
@@ -1862,7 +1862,7 @@ body {
 
 .si-about-observation { display: grid; min-height: 90svh; grid-template-columns: .85fr 1.15fr; color: white; background: var(--si-ink); }
 .si-about-observation figure { position: relative; min-height: 600px; margin: 0; }
-.si-about-observation img { object-fit: cover; filter: grayscale(1) contrast(1.08); }
+.si-about-observation img { object-fit: cover; filter: saturate(1.05) contrast(1.05); }
 .si-about-observation p { align-self: end; max-width: 13ch; padding: clamp(4rem, 8vw, 8rem); font-family: var(--font-archivo), sans-serif; font-size: clamp(3rem, 6vw, 6rem); font-weight: 650; letter-spacing: -.04em; line-height: .9; }
 
 /* Contact */
