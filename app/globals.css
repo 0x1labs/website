@@ -836,6 +836,22 @@ h1, h2, h3,
   mix-blend-mode: normal;
 }
 
+/* Dimmed click-catcher behind the drawer. Sits above the page and the nav
+   (z 180) but below the drawer itself (z 220), so a click anywhere outside the
+   panel closes it. `visibility: hidden` when closed keeps it from swallowing
+   pointer events. */
+.sc-index__scrim {
+  position: fixed;
+  z-index: 210;
+  inset: 0;
+  background: rgba(5, 5, 5, .55);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .28s ease, visibility .28s;
+}
+.sc-index__scrim[data-open='true'] { opacity: 1; visibility: visible; }
+
 .sc-index[data-open='true'] { visibility: visible; opacity: 1; transform: translateX(0); }
 .sc-index__head { display: flex; align-items: center; justify-content: space-between; font-weight: 800; }
 .sc-index__head button { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid white; background: transparent; color: white; cursor: pointer; }

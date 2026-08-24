@@ -154,6 +154,16 @@ export default function Navbar() {
         </button>
       </nav>
 
+      {/* Click-catcher behind the drawer. It is aria-hidden and unfocusable on
+          purpose: keyboard users already have Escape and the close button, both
+          of which stay inside the focus trap. */}
+      <div
+        className="sc-index__scrim"
+        data-open={open ? 'true' : 'false'}
+        aria-hidden="true"
+        onClick={() => setOpen(false)}
+      />
+
       <div
         ref={overlayRef}
         id="site-index"
