@@ -53,8 +53,14 @@ export default function SignalHomepage({ products }: { products: Product[] }) {
 
       <section id="careers-invite" className="sc-invitation" aria-labelledby="invitation-heading">
         <div>
-          <h2 id="invitation-heading">Join us. Make something worth using.</h2>
-          <p>Bring curiosity, judgment, and something only you can add.</p>
+          {/* Bookends the origin section's "We chase what keeps coming back." —
+              same question, now turned on the reader. Deliberately distinct from
+              the careers page hero, which this hands off to. */}
+          <h2 id="invitation-heading">What keeps coming back to you?</h2>
+          <p>
+            Ours became the products above. Bring yours — here it gets to be the work, not the
+            weekend project.
+          </p>
         </div>
         <Link href="/careers" className="sc-invitation__link">
           See open roles
