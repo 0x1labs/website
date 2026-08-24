@@ -527,7 +527,7 @@ body {
   .zl-products-panorama__sticky { position: static; height: auto; overflow: visible; }
   .zl-products-panorama__strip { width: 100%; height: auto; display: block; transform: none !important; }
   .zl-product-scene { width: 100%; height: auto; min-height: 100svh; display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 2.5rem; padding: 6.7rem 1rem 4rem; }
-  .zl-product-scene h2 { font-size: clamp(4rem, 22vw, 7rem); }
+  .zl-product-scene h2 { font-size: clamp(3.4rem, 22vw, 7rem); }
   .zl-product-scene__visual { min-height: 46svh; order: -1; }
   .zl-product-device { width: min(76vw, 390px); }
   .zl-product-scene__proof { top: 0; right: 0; max-width: 180px; font-size: .68rem; }
@@ -607,6 +607,36 @@ body {
   font-weight: 900;
   letter-spacing: -.055em;
   text-wrap: balance;
+}
+
+/* Display type is set in viewport units, so a single long word ("something",
+   "Representative", "interesting.") can be wider than its column and spill
+   past the edge. These two properties make that impossible anywhere on the
+   site, including for copy added later. The document is lang="en", so
+   `hyphens: auto` breaks at a syllable and shows a hyphen; `break-word` is the
+   fallback for words hyphenation cannot help. Neither affects a heading that
+   already fits. */
+h1, h2, h3,
+.sc-site h1, .sc-site h2, .sc-site h3,
+.si-page h1, .si-page h2, .si-page h3 {
+  /* `anywhere`, not `break-word`: only `anywhere` lets the break opportunity
+     count toward min-content size, so a grid or flex column can actually
+     shrink below its longest word instead of dragging the whole column
+     (headline and body copy alike) past the viewport edge. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+/* Grid and flex items default to `min-width: auto`. Zeroing it on the page
+   level containers lets the rule above take effect. */
+.si-role-hero > *,
+.si-role-details > *,
+.si-legal-body > *,
+.si-index-hero > *,
+.si-product-hero > *,
+.si-about-hero > *,
+.si-contact-notes > * {
+  min-width: 0;
 }
 
 .sc-site p { color: inherit; }
@@ -1547,7 +1577,7 @@ body {
   .sc-runway__strip { width: 100%; height: auto; display: block; transform: none !important; }
   .sc-product { width: 100%; height: auto; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: 2.4rem; padding: 6.5rem 1rem 4rem; }
   .sc-product__copy { width: 100%; }
-  .sc-product h2 { font-size: clamp(4.2rem, 22vw, 7rem); }
+  .sc-product h2 { font-size: clamp(3.4rem, 22vw, 7rem); }
   .sc-product__statement { font-size: clamp(1.35rem, 6.5vw, 2rem); }
   .sc-product__world { order: -1; width: 100%; min-height: 56svh; }
   .sc-product__world::after, .sc-product-signal { inset: 0; }
@@ -1568,11 +1598,11 @@ body {
   .sc-lens { width: min(66vw, 310px); }
 
   .sc-unreleased { min-height: auto; grid-template-columns: 1fr; padding: 6rem 1rem; }
-  .sc-unreleased h2 { font-size: clamp(3.8rem, 16vw, 6rem); }
+  .sc-unreleased h2 { font-size: clamp(3.4rem, 16vw, 6rem); }
   .sc-unreleased__signal { min-height: 62svh; }
 
   .sc-invitation { min-height: 82svh; grid-template-columns: 1fr; align-content: end; padding: 6rem 1rem; }
-  .sc-invitation h2 { font-size: clamp(4.2rem, 19vw, 7rem); }
+  .sc-invitation h2 { font-size: clamp(3.4rem, 19vw, 7rem); }
   .sc-invitation__link { width: max-content; }
   .sc-footer { padding: 3.25rem 1rem 2rem; }
   .sc-footer__top { align-items: flex-start; flex-direction: column; gap: 2.25rem; }
@@ -1587,15 +1617,19 @@ body {
   .sc-career-stage__signal i:nth-of-type(3) { right: 6%; bottom: 15%; }
   .sc-career-stage__signal i:nth-of-type(4) { right: 30%; bottom: 4%; }
   .sc-career-stage__copy { max-width: 100%; }
-  .sc-career-stage h1 { font-size: clamp(4rem, 20vw, 7rem); }
+  .sc-career-stage h1 { font-size: clamp(3.4rem, 16vw, 7rem); }
   .sc-career-stage__copy p { font-size: 1rem; }
   .sc-openings { padding: 6rem 1rem; }
   .sc-openings > header { align-items: start; flex-direction: column; }
-  .sc-openings h2 { font-size: clamp(4rem, 18vw, 6rem); }
+  .sc-openings h2 { font-size: clamp(3.4rem, 18vw, 6rem); }
   .sc-openings__list article, .sc-opening--empty { min-height: 360px; grid-template-columns: 1fr !important; align-content: end; gap: 1rem; padding: 2rem 0; }
   .sc-openings__list article:hover, .sc-openings__list article:focus-within { padding-inline: 1rem; }
   .sc-openings article > p, .sc-openings article > a { grid-column: 1; grid-row: auto; }
   .sc-openings h3 { font-size: clamp(2rem, 9vw, 3.2rem); line-height: .95; }
+
+  /* This heading had no phone rule, so its 4.2rem desktop floor applied here
+     and overflowed on narrow screens. */
+  .si-not-found h1 { font-size: clamp(3.4rem, 15vw, 10rem); }
 
   /* The hero's product list repeats the product runway directly below it,
      which is already stacked and readable on a phone. Hiding it keeps the hero
@@ -1986,15 +2020,15 @@ body {
 @media (max-width: 640px) {
   .si-index-hero { grid-template-rows: auto; gap: 1.75rem; padding-top: 9rem; }
   .si-index-hero h1,
-  .si-contact-hero h1 { font-size: clamp(3.8rem, 18vw, 6rem); }
+  .si-contact-hero h1 { font-size: clamp(3.4rem, 18vw, 6rem); }
   .si-product-row__visual { min-height: 52svh; }
   .si-product-row[data-visual='phone'] .si-product-row__visual img { padding: 2.5rem 32%; }
   .si-product-row[data-visual='lens'] .si-product-row__visual img { padding: 3rem 36%; }
   .si-product-row[data-visual='orbit'] .si-product-row__visual img { padding: 3rem 28%; }
   .si-product-row__copy { min-height: 65svh; padding-block: 4rem; }
-  .si-product-row h2 { font-size: clamp(4rem, 22vw, 7rem); }
+  .si-product-row h2 { font-size: clamp(3.4rem, 22vw, 7rem); }
   .si-product-row__meta { margin-bottom: 3.5rem; }
-  .si-product-hero__copy h1 { font-size: clamp(4rem, 23vw, 7rem); }
+  .si-product-hero__copy h1 { font-size: clamp(3.4rem, 23vw, 7rem); }
   .si-product-hero__visual img { padding: 2rem; }
   .si-product-reason__lead h2,
   .si-about-belief > h2,
@@ -2003,11 +2037,11 @@ body {
   .si-contact-hero__email { align-items: center; overflow-wrap: anywhere; font-size: clamp(2.7rem, 13.5vw, 5rem); }
   .si-contact-hero__email span { display: block; }
   .si-contact-hero__email svg { flex: 0 0 2.75rem; }
-  .si-role-hero h1 { font-size: clamp(3.5rem, 17vw, 6rem); }
+  .si-role-hero h1 { max-width: none; font-size: clamp(2.4rem, 11vw, 6rem); }
   .si-role-details { gap: 6rem; }
   .si-role-apply__head { align-items: start; flex-direction: column; }
   .si-role-apply__frame { height: 880px; }
-  .si-legal-hero h1 { font-size: clamp(3.8rem, 18vw, 6rem); }
+  .si-legal-hero h1 { font-size: clamp(3.4rem, 18vw, 6rem); }
   .si-legal-body { gap: 5rem; }
 }
 
