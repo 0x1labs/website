@@ -1,16 +1,53 @@
 'use client'
 
 import Link from 'next/link'
-import { X } from 'lucide-react'
+import { ArrowLeft, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 const destinations = [
+  { label: 'Home', href: '/', note: 'Start here' },
   { label: 'Work', href: '/products', note: 'Everything public' },
   { label: 'Company', href: '/about', note: 'Why we build' },
   { label: 'Careers', href: '/careers', note: 'Make with us' },
   { label: 'Contact', href: '/contact', note: 'Start a conversation' },
 ]
+
+/** Human labels for the first path segment; anything unlisted is de-slugified. */
+const SECTION_LABELS: Record<string, string> = {
+  products: 'Work',
+  work: 'Work',
+  about: 'Company',
+  careers: 'Careers',
+  contact: 'Contact',
+  services: 'Services',
+  blog: 'Journal',
+  faq: 'FAQ',
+  privacy: 'Privacy',
+  terms: 'Terms',
+}
+
+const deslugify = (segment: string) =>
+  segment
+    .split('-')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+
+/**
+ * Turns a pathname into at most two readable crumbs, e.g.
+ * `/products/comet` -> ['Work', 'Comet']. Home returns an empty trail.
+ */
+function useTrail(pathname: string) {
+  return useMemo(() => {
+    const segments = pathname.split('/').filter(Boolean)
+    if (!segments.length) return [] as string[]
+    const [first, ...rest] = segments
+    const head = SECTION_LABELS[first] ?? deslugify(first)
+    const tail = rest.length ? deslugify(rest[rest.length - 1]) : null
+    return tail ? [head, tail] : [head]
+  }, [pathname])
+}
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -19,6 +56,9 @@ export default function Navbar() {
   const triggerRef = useRef<HTMLButtonElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
   const firstLinkRef = useRef<HTMLAnchorElement>(null)
+
+  const trail = useTrail(pathname)
+  const isHome = trail.length === 0
 
   useEffect(() => {
     const updateScrolled = () => setScrolled(window.scrollY > 8)
@@ -62,10 +102,44 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="sc-nav" data-scrolled={scrolled ? 'true' : 'false'} aria-label="Primary navigation">
-        <Link href="/" className="sc-brand" aria-label="Zero One Labs home">
+      <nav
+        className="sc-nav"
+        data-scrolled={scrolled ? 'true' : 'false'}
+        data-home={isHome ? 'true' : 'false'}
+        aria-label="Primary navigation"
+      >
+        {/* Off the homepage the wordmark becomes an explicit back-to-home
+            control: an arrow slides in and the label announces the action. */}
+        <Link
+          href="/"
+          className="sc-brand"
+          aria-label={isHome ? 'Zero One Labs home' : 'Back to Zero One Labs home'}
+        >
+          <span className="sc-brand__back" aria-hidden="true">
+            <ArrowLeft size={18} />
+          </span>
           <span className="sc-brand__name">ZERO ONE LABS</span>
         </Link>
+
+        {!isHome && (
+          <p className="sc-nav__where">
+            <span className="sc-nav__where-root" aria-hidden="true">
+              Home
+            </span>
+            {trail.map((crumb, index) => (
+              <span
+                key={crumb}
+                className="sc-nav__crumb"
+                data-first={index === 0 ? 'true' : 'false'}
+                data-last={index === trail.length - 1 ? 'true' : 'false'}
+              >
+                <i aria-hidden="true">/</i>
+                {crumb}
+              </span>
+            ))}
+          </p>
+        )}
+
         <button
           ref={triggerRef}
           type="button"
@@ -99,13 +173,18 @@ export default function Navbar() {
 
         <nav aria-label="Site index links">
           {destinations.map((destination, index) => {
-            const active = pathname === destination.href || (destination.href === '/products' && pathname.startsWith('/products'))
+            const active =
+              destination.href === '/'
+                ? isHome
+                : pathname === destination.href ||
+                  (destination.href === '/products' && pathname.startsWith('/products'))
             return (
               <Link
                 key={destination.href}
                 ref={index === 0 ? firstLinkRef : undefined}
                 href={destination.href}
                 data-active={active ? 'true' : 'false'}
+                aria-current={active ? 'page' : undefined}
                 onClick={() => setOpen(false)}
                 tabIndex={open ? 0 : -1}
               >

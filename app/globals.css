@@ -655,22 +655,18 @@ body {
     min-height .5s cubic-bezier(.16,1,.3,1),
     background-color .5s cubic-bezier(.16,1,.3,1),
     border-color .5s cubic-bezier(.16,1,.3,1),
-    box-shadow .5s cubic-bezier(.16,1,.3,1),
-    backdrop-filter .5s cubic-bezier(.16,1,.3,1);
+    box-shadow .5s cubic-bezier(.16,1,.3,1);
 }
 
-/* Scrolled: thinner, translucent, one hairline. No heavy slab shadow. */
+/* Scrolled: thinner, fully opaque paper, one hard hairline.
+   No blur or translucency — over the ink-black product runway a semi-
+   transparent warm paper reads as muddy grey, and the Signal Chamber
+   language is hard cuts, not glass. */
 .sc-nav[data-scrolled='true'] {
   min-height: 60px;
-  background: color-mix(in srgb, var(--sc-paper) 82%, transparent);
-  backdrop-filter: saturate(1.6) blur(14px);
-  -webkit-backdrop-filter: saturate(1.6) blur(14px);
-  border-bottom-color: rgba(5,5,5,.1);
-  box-shadow: 0 10px 30px rgba(5,5,5,.06);
-}
-
-@supports not (backdrop-filter: blur(4px)) {
-  .sc-nav[data-scrolled='true'] { background: var(--sc-paper); }
+  background: var(--sc-paper);
+  border-bottom-color: var(--sc-ink);
+  box-shadow: none;
 }
 
 .sc-nav .sc-brand__name,
@@ -681,6 +677,7 @@ body {
 .sc-nav[data-scrolled='true'] .sc-brand__name { font-size: clamp(1.12rem, 1.2vw, 1.28rem); }
 
 .sc-brand {
+  flex: 0 0 auto;
   min-height: 48px;
   display: inline-flex;
   align-items: center;
@@ -690,6 +687,66 @@ body {
   color: inherit;
   text-rendering: geometricPrecision;
 }
+
+/* Off the homepage the wordmark doubles as the back-to-home control. The
+   arrow occupies real width only then, so the homepage layout is unchanged. */
+.sc-brand__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  margin-right: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(.35rem);
+  transition:
+    width .42s cubic-bezier(.16,1,.3,1),
+    margin-right .42s cubic-bezier(.16,1,.3,1),
+    opacity .3s ease,
+    transform .42s cubic-bezier(.16,1,.3,1);
+}
+.sc-nav[data-home='false'] .sc-brand__back {
+  width: 18px;
+  margin-right: .6rem;
+  opacity: 1;
+  transform: translateX(0);
+}
+.sc-nav[data-home='false'] .sc-brand:active .sc-brand__back { transform: translateX(-.25rem); }
+
+@media (hover: hover) and (pointer: fine) {
+  .sc-nav[data-home='false'] .sc-brand:hover .sc-brand__back { transform: translateX(-.25rem); }
+  .sc-nav[data-home='false'] .sc-brand:hover .sc-brand__name { font-style: italic; }
+}
+
+/* "You are here" trail. A hairline rule separates it from the wordmark so the
+   heavy 900-weight logotype and the light mono trail never read as one word.
+   `margin-right: auto` keeps it left-aligned and pins the index trigger right. */
+.sc-nav__where {
+  --where-gap: clamp(1.4rem, 3vw, 2.4rem);
+  flex: 0 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  margin: 0 auto 0 var(--where-gap);
+  color: var(--sc-muted);
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.sc-nav__where-root { flex: 0 0 auto; }
+.sc-nav__crumb {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sc-nav__crumb i { padding: 0 .5rem; font-style: normal; opacity: .5; }
+.sc-nav__crumb[data-last='true'] { color: var(--sc-ink); max-width: clamp(12ch, 26vw, 34ch); }
+
 
 .sc-footer__mark {
   flex: 0 0 auto;
@@ -775,6 +832,162 @@ body {
   padding: clamp(7rem, 12vh, 9.5rem) var(--sc-edge) clamp(3.5rem, 7vh, 5.5rem);
   color: var(--sc-ink);
   background: var(--sc-paper);
+}
+
+/* Decoration only: a still dither wash that echoes the Signal Chamber grid.
+   No content depends on it, so touch devices lose nothing. */
+.sc-hero__grain {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--sc-ink) 0 .9px, transparent 1.4px),
+    radial-gradient(circle at 50% 50%, var(--sc-ink) 0 .6px, transparent 1.1px);
+  background-size: 26px 26px, 61px 61px;
+  background-position: 0 0, 13px 19px;
+  opacity: .07;
+  -webkit-mask-image: radial-gradient(120% 90% at 78% 12%, #000 0%, transparent 72%);
+          mask-image: radial-gradient(120% 90% at 78% 12%, #000 0%, transparent 72%);
+}
+
+.sc-hero__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+  align-items: center;
+  gap: clamp(2.5rem, 5vw, 5.5rem);
+}
+
+.sc-hero__copy { min-width: 0; }
+
+.sc-hero__signal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6rem .75rem;
+  margin: 0 0 clamp(1.5rem, 3.5vh, 2.4rem);
+  color: var(--sc-muted);
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.sc-hero__signal i { width: 14px; height: 1px; background: currentColor; opacity: .7; }
+
+.sc-hero h1 {
+  max-width: 15ch;
+  font-size: clamp(3rem, 6.6vw, 6.6rem);
+  line-height: .86;
+}
+
+.sc-hero__lede {
+  max-width: 48ch;
+  margin: clamp(1.5rem, 3.5vh, 2.2rem) 0 0;
+  color: var(--text-secondary);
+  font-size: clamp(1.02rem, 1.2vw, 1.18rem);
+  line-height: 1.6;
+}
+
+.sc-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 1.1rem;
+  margin-top: clamp(1.75rem, 4vh, 2.6rem);
+}
+
+.sc-hero__cta {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  padding: .7rem 1.15rem;
+  border: 1px solid var(--sc-ink);
+  color: var(--sc-ink);
+  font-size: .86rem;
+  font-weight: 820;
+  transition: background-color .18s ease, color .18s ease;
+}
+.sc-hero__cta--primary { color: var(--sc-paper); background: var(--sc-ink); }
+/* Pressed state works on touch; hover is an enhancement on top of it. */
+.sc-hero__cta:active { background: var(--sc-ink); color: var(--sc-paper); }
+.sc-hero__cta--primary:active { background: var(--sc-paper); color: var(--sc-ink); }
+
+@media (hover: hover) and (pointer: fine) {
+  .sc-hero__cta:hover { background: var(--sc-ink); color: var(--sc-paper); }
+  .sc-hero__cta--primary:hover { background: var(--sc-paper); color: var(--sc-ink); }
+}
+
+/* The product index: real anchors, each a full-width 48px+ touch target. */
+.sc-hero__index { min-width: 0; border-top: 1px solid var(--sc-ink); }
+.sc-hero__index-label {
+  margin: 0;
+  padding: .85rem 0;
+  color: var(--sc-muted);
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.sc-hero__index ul { margin: 0; padding: 0; list-style: none; }
+.sc-hero__index li { border-top: 1px solid var(--zl-line); }
+.sc-hero__index li a {
+  min-height: 56px;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: .9rem;
+  padding: .85rem 0;
+  color: var(--sc-ink);
+  transition: padding-left .22s cubic-bezier(.16,1,.3,1);
+}
+
+/* Signals that the row leaves the page rather than scrolling within it. */
+.sc-hero__index-go {
+  flex: 0 0 auto;
+  align-self: center;
+  color: var(--sc-muted);
+  transition: transform .22s cubic-bezier(.16,1,.3,1), color .22s ease;
+}
+.sc-hero__index li a:active .sc-hero__index-go { color: var(--sc-ink); transform: translate(2px, -2px); }
+.sc-hero__index li a strong {
+  font-family: var(--sc-display);
+  font-size: 1.12rem;
+  font-weight: 900;
+  letter-spacing: -.03em;
+}
+.sc-hero__index-line {
+  min-width: 0;
+  color: var(--text-secondary);
+  font-size: .88rem;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sc-hero__index-meta {
+  grid-column: 1 / 3;
+  margin-top: .3rem;
+  color: var(--sc-muted);
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sc-hero__index li a:hover { padding-left: .55rem; }
+  .sc-hero__index li a:hover strong { font-style: italic; }
+  .sc-hero__index li a:hover .sc-hero__index-go { color: var(--sc-ink); transform: translate(2px, -2px); }
 }
 
 .sc-colour-reveal {
@@ -1293,6 +1506,14 @@ body {
   .sc-nav[data-scrolled='true'] { min-height: 54px; }
   .sc-nav[data-scrolled='true'] .sc-brand__name { font-size: 1rem; }
   .sc-brand__name { font-size: 1.08rem; }
+  .sc-nav[data-home='false'] .sc-brand__name { font-size: .92rem; }
+  .sc-nav[data-home='false'] .sc-brand__back { width: 16px; margin-right: .4rem; }
+  .sc-nav__where { --where-gap: .8rem; font-size: .6rem; letter-spacing: .08em; }
+  .sc-nav__where-root { display: none; }
+  .sc-nav__crumb:not([data-first='true']) { display: none; }
+  .sc-nav__crumb[data-first='true'] { max-width: none; }
+  .sc-nav__crumb[data-first='true'] i { display: none; }
+  .sc-nav__crumb[data-first='true'] { color: var(--sc-ink); }
   .sc-index-trigger { min-width: 48px; grid-template-columns: 18px; }
   .sc-index-trigger span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
   .sc-index-trigger i { grid-column: 1; }
