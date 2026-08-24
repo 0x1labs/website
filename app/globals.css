@@ -1732,24 +1732,22 @@ body {
 .si-product-row[data-product='comet'] .si-product-row__visual::before { background-image: radial-gradient(circle at 50% 50%, transparent 0 18%, rgba(255,255,255,.15) 18.2% 18.5%, transparent 18.7% 31%, rgba(255,255,255,.1) 31.2% 31.5%, transparent 31.7%); }
 .si-product-row[data-product='kairos'] .si-product-row__visual::before { background-image: repeating-radial-gradient(circle at 50% 50%, transparent 0 56px, rgba(255,255,255,.16) 57px 58px); }
 .si-product-row[data-product='lumin'] .si-product-row__visual::before { background-image: repeating-linear-gradient(90deg, rgba(5,5,5,.08) 0 1px, transparent 1px 20%); }
-.si-product-row[data-product='huelens'] .si-product-row__visual::before { background: conic-gradient(from 40deg, #4f8fd3, #b7d7cf, #f1f3ef, #d49a3a, #815b9c, #4f8fd3); filter: grayscale(1); transition: filter 1s cubic-bezier(.16,1,.3,1); }
+.si-product-row[data-product='huelens'] .si-product-row__visual::before { background: conic-gradient(from 40deg, #4f8fd3, #b7d7cf, #f1f3ef, #d49a3a, #815b9c, #4f8fd3); }
 
 .si-product-row__visual img {
   z-index: 1;
   object-fit: contain;
   padding: clamp(2.25rem, 5vw, 6rem);
-  filter: grayscale(1) contrast(1.1) drop-shadow(0 30px 50px rgba(0,0,0,.24));
+  filter: saturate(1.04) contrast(1.03) drop-shadow(0 30px 50px rgba(0,0,0,.24));
   transition: transform .7s cubic-bezier(.2,.8,.2,1), filter .7s ease;
 }
 
 .si-product-row[data-visual='phone'] .si-product-row__visual img { padding: clamp(2.5rem, 6vh, 5rem) 20%; }
 .si-product-row[data-visual='desktop'] .si-product-row__visual img { padding: clamp(2rem, 5vw, 5rem) 8%; }
-.si-product-row[data-visual='lens'] .si-product-row__visual img { padding: clamp(4rem, 9vh, 8rem) 32%; filter: grayscale(1) invert(1); }
+.si-product-row[data-visual='lens'] .si-product-row__visual img { padding: clamp(4rem, 9vh, 8rem) 32%; }
 .si-product-row[data-visual='orbit'] .si-product-row__visual img { padding: clamp(3rem, 7vh, 6rem) 24%; }
-.si-product-row:nth-child(even)[data-visual='lens'] .si-product-row__visual img { filter: grayscale(1); }
 
-.si-product-row:hover .si-product-row__visual img { transform: scale(1.045) rotate(-1deg); filter: grayscale(0) contrast(1.04) drop-shadow(0 34px 54px rgba(0,0,0,.28)); }
-.si-product-row[data-product='huelens']:hover .si-product-row__visual::before { filter: grayscale(0); }
+.si-product-row:hover .si-product-row__visual img { transform: scale(1.045) rotate(-1deg); filter: saturate(1.06) contrast(1.04) drop-shadow(0 34px 54px rgba(0,0,0,.28)); }
 
 
 .si-product-row__copy {
@@ -1802,7 +1800,7 @@ body {
 .si-product-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 2.5rem; }
 
 .si-product-hero__visual { position: relative; min-height: 600px; margin: 0; overflow: hidden; background: var(--si-ink); }
-.si-product-hero__visual img { object-fit: contain; padding: clamp(2rem, 6vw, 7rem); filter: grayscale(1) contrast(1.12); }
+.si-product-hero__visual img { object-fit: contain; padding: clamp(2rem, 6vw, 7rem); filter: saturate(1.04) contrast(1.03); }
 
 .si-product-facts {
   grid-column: 1 / -1;
