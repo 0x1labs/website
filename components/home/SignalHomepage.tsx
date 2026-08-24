@@ -12,7 +12,7 @@ export default function SignalHomepage({ products }: { products: Product[] }) {
   return (
     <main id="main-content" className="sc-site">
       <Navbar />
-      <BinaryHero />
+      <BinaryHero products={products} />
 
       <section id="origin" className="sc-origin" aria-labelledby="origin-heading">
         <div className="sc-origin__copy">
